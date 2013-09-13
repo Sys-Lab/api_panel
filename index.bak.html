@@ -166,14 +166,36 @@ html,body,input,textarea{
 body{
 	background-color:#D2D2D2;
 }
+.syslab_api_plbg_des_inputvar input ,#syslab_api_plbg_des_statue input{
+border: none;
+text-align: center;
+outline: none;
+font-size: 16px;
+padding: 0;
+margin: 0;
+text-shadow: 0px 0px 5px #444;
+background-color:transparent;
+display:inline-block;
+}
+#syslab_api_plbg_des_statue input{
+	width:40px;
+	font-weight:bold;
+}
+textarea{
+	width: 100%;
+min-height: 140px;
+max-width: 100%;
+outline:none;
+}
 #syslab_api_load_file{
 	display:none;
 }
 #syslab_api_toolbox div,#syslab_api_toolbox_sl div,#syslab_api_plbg_toolbox div,#syslab_api_plbg_des_toolbox div,
-#syslab_api_plbg_fold,.syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_statue_ico,.syslab_api_apinode_fold{
+#syslab_api_plbg_fold,.syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_statue_ico,.syslab_api_apinode_fold,
+.syslab_api_plbg_des_edit_btn2{
 	font-family: 'SYSLAB_icon_Fonts';
 }
-.syslab_api_plbg_des_edit_btn{
+.syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_edit_btn2{
 	margin-left:20px !important;
 	color:rgba(0,0,0,0.2) !important;
 	cursor:pointer !important;
@@ -181,7 +203,16 @@ body{
 	font-weight:100  !important;
 	display:none;
 }
-.syslab_api_plbg_des_edit_btn:hover{
+.syslab_api_plbg_des_edit_btn2{
+	margin-left: 0px !important;
+width: 0px;
+}
+.syslab_api_plbg_des_edit_btn3{
+	float: right;
+left: -30px !important;
+position: relative;
+}
+.syslab_api_plbg_des_edit_btn:hover,.syslab_api_plbg_des_edit_btn2:hover{
 	color:rgba(0,0,0,0.6) !important;
 }
 #syslab_api_toolbox{
@@ -232,6 +263,10 @@ body{
 	bottom:0px;
 	background-color:rgba(0,0,0,0.6);
 	
+}
+.syslab_api_plbg_des_edit_on{
+	background-color:rgba(0,0,0,0.6);
+	color:#fff;
 }
 #syslab_api_plbg_apis{
 	position:absolute;
@@ -303,7 +338,7 @@ body{
 	cursor:pointer;
 	color:rgba(0,0,0,0.4);
 }
-#syslab_api_plbg_des_toolbox div:hover,.syslab_api_plbg_des_edit_on{
+#syslab_api_plbg_des_toolbox div:hover{
 	color:rgba(0,0,0,0.6);
 }
 #syslab_api_plbg_des_datas{
@@ -317,7 +352,7 @@ body{
 	font-weight:bold;
 	border-bottom:solid 1px #444;
 }
-.syslab_api_edit_on .syslab_api_plbg_des_edit_btn{
+.syslab_api_edit_on .syslab_api_plbg_des_edit_btn,.syslab_api_edit_on .syslab_api_plbg_des_edit_btn2{
 	display:inline-block;
 }
 #syslab_api_plbg_des_detialdes,#syslab_api_plbg_des_des_var{
@@ -330,8 +365,9 @@ body{
 	width:250px;
 }
 .syslab_api_plbg_des_inputvar{
-	display:inline-block;
-	width:200px;
+	display: inline-block;
+width: 150px;
+margin: 0 25px 0 25px;
 }
 .bgWhite{
 	background-color:#fff;
@@ -427,7 +463,7 @@ body{
                     </div>
                 </center>
                 <div id="syslab_api_plbg_des_inputvar_title">
-                    <span>请求参数</span>
+                    <span>请求参数</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_des_inputvar_add">&#xe076;</span>
                 </div>
                 <center>
                     <div id="syslab_api_plbg_des_inputvar"></div>
@@ -439,7 +475,7 @@ body{
                      <pre class="brush: js"></pre>
                 </div>
                 <div id="syslab_api_plbg_des_codedes_title">
-                    <span>返回字段说明</span>
+                    <span>返回字段说明</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_codedes_add">&#xe076;</span>
                 </div>
                 <center>
                     <div id="syslab_api_plbg_codedes">
@@ -864,6 +900,7 @@ var readeddatas={
 		}
 	]
 }
+
 var INIT_ALL=function(node){
 	if(node.child){
 		for(var i=0;i<node.child.length;i++){
@@ -893,7 +930,16 @@ var INIT_MAIN=function(node) {
 	}
 	return;
 }
-apidoc=0;
+apidoc={
+	project:{
+		name:"test project",
+		apiver:1,
+		rev:1,
+		mtime:(new Date()).getTime(),
+		ctime:(new Date()).getTime()
+	},
+	data:[]
+}
 
 
 LAST_ADDED_API=0;
@@ -1161,7 +1207,7 @@ function parse_apidoc_do(data,node,lastw){
 		
 		
 		
-		_f("#syslab_api_plbg_des_inputvar").innerHTML='<span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_des_inputvar_add">&#xe076;</span><li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar_ico">必选</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
+		_f("#syslab_api_plbg_des_inputvar").innerHTML='<li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar">必选</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
 		var j=-1;
 		for(var i=0;i<$this.apidata.req.length;i++){
 			
@@ -1179,7 +1225,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.n;
 			tmpb.appendChild(tmpc);
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2";
 			tmpc.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1198,10 +1244,10 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_statue_ico";
+			tmpc.className="syslab_api_plbg_des_inputvar syslab_api_plbg_des_statue_ico";
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			if(tdata.m){
@@ -1225,7 +1271,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.t;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1248,7 +1294,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.des;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1267,7 +1313,7 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			var tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2 syslab_api_plbg_des_edit_btn3";
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1304,7 +1350,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.n;
 			tmpb.appendChild(tmpc);
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2";
 			tmpc.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1323,10 +1369,10 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_statue_ico";
+			tmpc.className="syslab_api_plbg_des_inputvar syslab_api_plbg_des_statue_ico";
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			if(tdata.m){
@@ -1350,7 +1396,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.t;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1373,7 +1419,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.des;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1392,7 +1438,7 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			var tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2 syslab_api_plbg_des_edit_btn3";
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1431,7 +1477,7 @@ function parse_apidoc_do(data,node,lastw){
 		
 
        			
-		_f("#syslab_api_plbg_codedes").innerHTML='<span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_codedes_add">&#xe076;</span><li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
+		_f("#syslab_api_plbg_codedes").innerHTML='<li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
 		var j=-1;
 		for(var i=0;i<$this.apidata.codedes.length;i++){
 			var tdata=$this.apidata.codedes[i];
@@ -1448,7 +1494,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.n;
 			tmpb.appendChild(tmpc);
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2";
 			tmpc.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1471,7 +1517,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.t;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1494,7 +1540,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.des;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1513,7 +1559,7 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			var tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2 syslab_api_plbg_des_edit_btn3";
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1548,7 +1594,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.n;
 			tmpb.appendChild(tmpc);
 			tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2";
 			tmpc.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
@@ -1571,7 +1617,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.t;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1594,7 +1640,7 @@ function parse_apidoc_do(data,node,lastw){
 			tmpc.innerHTML=tdata.des;
 			tmpb.appendChild(tmpc);
 			var tmpd=document.createElement('span');
-			tmpd.className="syslab_api_plbg_des_edit_btn";
+			tmpd.className="syslab_api_plbg_des_edit_btn2";
 			tmpd.innerHTML="&#xe078;";
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
@@ -1613,7 +1659,7 @@ function parse_apidoc_do(data,node,lastw){
 			},false);
 			
 			var tmpc=document.createElement('span');
-			tmpc.className="syslab_api_plbg_des_edit_btn";
+			tmpc.className="syslab_api_plbg_des_edit_btn2 syslab_api_plbg_des_edit_btn3";
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){

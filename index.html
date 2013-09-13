@@ -143,6 +143,7 @@
                         <div class="syslab_api_landing_cloud_ls_ips_t">Password :</div><input id="syslab_api_landing_cloud_ls_ips_pass" type="password">
                     </li>
                 </div>
+                <div id="syslab_api_landing_cloud_ls_notice" class="syslab_api_landing_cloud_ls_btn">无法连到接服务器</div>
                 <div id="syslab_api_landing_cloud_ls_login_go" class="syslab_api_landing_cloud_ls_btn">登录</div>
                 <div id="syslab_api_landing_cloud_ls_signup_go" class="syslab_api_landing_cloud_ls_btn">立即注册</div>
             </div>
@@ -258,7 +259,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 
-
+socket=io.connect("127.0.0.1:18086");
 
 
 
@@ -327,7 +328,8 @@ setTimeout(function(){
 	_f("#syslab_api_landing_local").style.opacity=1;
 },1200);
 var SYSAPI_MYPJ={};
-_f("#syslab_api_landing_local_go").addEventListener("click",function(){
+_f("#syslab_api_landing_local_go").addEventListener("click",show_pjboard,false)
+function show_pjboard(){
 	_f("#syslab_api_landing_cloud").style.opacity=0;
 	_f("#syslab_api_landing_local").style.opacity=0;
 	_f("#syslab_api_landing_cloud").style.marginTop="-200px";
@@ -400,7 +402,7 @@ _f("#syslab_api_landing_local_go").addEventListener("click",function(){
 		})
 		//_f("#syslab_api_landing").style.display="none";
 	},600);
-},false)
+}
 _f("#syslab_api_landing_choosepj_addbtn").addEventListener("click",function(){
 	_f("#syslab_api_landing_choosepj_list").style.marginLeft="-200px";
 	_f("#syslab_api_landing_choosepj_list").style.opacity=0;
@@ -536,19 +538,87 @@ _f("#syslab_api_landing_cloud_go").addEventListener("click",function(){
 	_f("#syslab_api_landing_cloud").style.marginTop=(-1*window.innerHeight)+"px";
 	_f("#syslab_api_landing_cloud_ls").style.top=(window.innerHeight)+"px";
 	_f("#syslab_api_landing_cloud_ls").style.display="block";
+	if(SERVER_CONNECTED){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="";
+	}
+	if(NOW_USER_SIGNED){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="自动登录成功,正在同步数据";
+		sync_datas(function(){
+			_f("#syslab_api_landing_cloud_ls_notice").innerHTML="同步成功";
+			show_pjboard();
+		});
+	}
 	setTimeout(function(){
 		_f("#syslab_api_landing_cloud_ls").style.opacity=1;
 		_f("#syslab_api_landing_cloud_ls").style.marginTop="0px";
 	},600);
 	
 },false)
+_f("#syslab_api_landing_cloud_ls_login_go").addEventListener("click",function(){
+	if(!SERVER_CONNECTED){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="无法连接至服务器";
+		return;
+	}
+	var uname=_f("#syslab_api_landing_cloud_ls_ips_email").value;
+	var upass=_f("#syslab_api_landing_cloud_ls_ips_pass").value;
+	if(!uname||!upass){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="用户名 密码 不能为空";
+		return;
+	}
+	var TMP_UTOKEN=SYSLIB_token.get();
+	socket.emit('login', { "uname": uname,"upass":upass,"utoken":TMP_UTOKEN});
+},false)
+_f("#syslab_api_landing_cloud_ls_signup_go").addEventListener("click",function(){
+	if(!SERVER_CONNECTED){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="无法连接至服务器";
+		return;
+	}
+	var uname=_f("#syslab_api_landing_cloud_ls_ips_email").value;
+	var upass=_f("#syslab_api_landing_cloud_ls_ips_pass").value;
+	if(!uname||!upass){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="用户名 密码 不能为空";
+		return;
+	}
+	var TMP_UTOKEN=SYSLIB_token.get();
+	socket.emit('signup', { "uname": uname,"upass":upass,"utoken":TMP_UTOKEN});
+},false)
 
+socket.on('login', function (data) {
+	if(data.statue=="ok"){
+		NOW_USER={
+			uname:data.uname,
+			uid:data.uid,
+			utoken:data.utoken,
+			stoken:data.stoken
+		}
+		NOW_USER_SIGNED=1;
+		saveuser();
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="登录成功,正在同步数据";
+		sync_datas(function(){
+			_f("#syslab_api_landing_cloud_ls_notice").innerHTML="同步成功";
+			show_pjboard();
+		});
+	}else{
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="登录失败，请检查用户名和密码";
+	}
+});
 
-
-
-
-
-
+socket.on('signup', function (data) {
+	if(data.statue=="ok"){
+		NOW_USER={
+			uname:data.uname,
+			uid:data.uid,
+			utoken:data.utoken,
+			stoken:data.stoken
+		}
+		NOW_USER_SIGNED=1;
+		saveuser();
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="注册成功";
+		show_pjboard();
+	}else{
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="注册失败，请更换用户名";
+	}
+});
 
 
 
@@ -1834,7 +1904,47 @@ window.onbeforeunload=function(){
 		return "文档尚未保存，确定不保存直接退出？";
 	}
 }
+function sync_datas(cb){
+	cb();
+}
 //autoload();
+var NOW_USER={
+	uname:0,
+	uid:0,
+	utoken:0,
+	stoken:0
+}
+NOW_USER_tmp=0;
+NOW_USER_SIGNED=0;
+socket.on('signin', function (data) {
+	if(data.statue=="ok"){
+		NOW_USER=NOW_USER_tmp;
+		NOW_USER_SIGNED=1;
+	}
+});
+SERVER_CONNECTED=0;
+
+socket.on('connected', function (data) {
+	SERVER_CONNECTED=1;
+	console.log("cloud server connected");	
+});
+function loaduser(){
+	var user=SYSLIB_cookies.get("SYS_API_USER",0);
+	if(user||user!=""){
+		var user=JSON.parse(unescape(SYSLIB_base64.decode(SYSLIB_cookies.get("SYS_API_USER",0))));
+		if(user.uid!="0"&&user.utoken!="0"&&user.stoken!="0"&&user.uname!="0"){
+			NOW_USER_tmp=user;
+			socket.emit('signin', { "uid": user.uid,"utoken":user.utoken,"stoken":user.stoken});
+		}
+	}
+}
+function saveuser(){
+	if(NOW_USER_SIGNED){
+		SYSLIB_cookies.set("SYS_API_USER",SYSLIB_base64.encode(escape(JSON.stringify(NOW_USER))),365);
+	}
+}
+loaduser();
+
 window.onload=function(){
 	_f("#syslab_api_loading").style.opacity=0;
 	setTimeout(function(){

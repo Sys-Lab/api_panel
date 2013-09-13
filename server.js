@@ -257,26 +257,41 @@ function binl2b64(binarray)
   }
   return str;
 }
+function rand(min,max,length) {
+		var $rand=min+(Math.random() * (max-min));
+		if(length){
+			if(length>0){
+				$rand=($rand.toString()).split(".");
+				$rand[1]=$rand[1].substr(0,length);
+				$rand=$rand.join(".");
+				return parseFloat($rand);
+			}else{
+				return $rand;
+			}
+		}else{
+            return Math.floor($rand);
+		}
+}
+function gettoken(length){
+	var $i=0;
+	var $length=length||32;
+	var $yu=Array(0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+	var $utk="";
+	for($i=0;$i<$length;$i++){
+		var $j=rand(0,61);
+		$utk+=$yu[$j];
+	}
+	return $utk;
+}
 var MongoClient = require('mongodb').MongoClient
-    , format = require('util').format;    
+    , format = require('util').format;
+	var apidb=0;  
 	/////
-MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
+MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
     if(err) throw err;
 
-    var collection = db.collection('test_insert');
-    collection.insert({a:2}, function(err, docs) {
-
-      collection.count(function(err, count) {
-        console.log(format("count = %s", count));
-      });
-
-      // Locate all the entries using find
-      collection.find().toArray(function(err, results) {
-        console.dir(results);
-        // Let's close the db
-        db.close();
-      });      
-    });
+    apidb=db;
+	USER=apidb.collection('user');
   })
   var $socket=0;
  var uploading_stack={};
@@ -332,7 +347,58 @@ MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
 		  	  $socket.emit('saved', { "statue": "ok" });
 		  }
   	  });
-	  
+	  socket.on('login', function (e) {
+		  if(!e.uname||!e.upass||!e.utoken){
+			  $socket.emit('login', { "statue": "error" });
+			  return;
+		  }
+		  var upass=str_md5(str_md5(e.upass));
+		  upass=upass.slice(0,16);
+		  USER.findAndModify({name:e.uname,pass:upass}, [['_id','asc']], {$set: {stoken: gettoken(),utoken:e.utoken}}, {}, function(err, datas) {
+			  console.log(datas)
+			  if(err||!datas){
+					$socket.emit('login', { "statue": "error" });
+				return; 
+			  }
+			  $socket.emit('login', { "statue": "ok","uid": datas._id,"stoken":datas.stoken,"uname":datas.name,"utoken":datas.utoken});
+		  })
+	  });
+	  socket.on('signin', function (e) {
+		  if(!e.utoken||!e.stoken||!e.uid){
+			  $socket.emit('signin', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			  $socket.emit('signin', { "statue": "ok"});
+		  })
+	  });
+	  socket.on('signup', function (e) {
+		  if(!e.uname||!e.upass||!e.utoken){
+			  $socket.emit('signup', { "statue": "error" });
+			  return;
+		  }
+		  var upass=str_md5(str_md5(e.upass));
+		  upass=upass.slice(0,16);
+		  USER.find({name:e.uname},function(err, datas) {
+			  if(err||!datas[0]){
+					USER.insert({name:e.uname,pass:upass,utoken:e.utoken,stoken: gettoken()}, function(err, datas) {
+						
+						if(err||!datas[0]){
+							  $socket.emit('signup', { "statue": "error" });
+						  return; 
+						}
+						
+						$socket.emit('signup', { "statue": "ok","uid": datas[0]._id,"stoken":datas[0].stoken,"utoken":datas[0].utoken,"uname":datas[0].name});
+					})
+			  }else{
+				  socket.emit('signup', { "statue": "error" });
+			  }
+		  })
+	  });
 	  $socket=socket;
   });
   

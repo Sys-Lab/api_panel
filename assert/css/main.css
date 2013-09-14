@@ -115,6 +115,10 @@
 	font-family: 'syslab_main_fonts';
 	src: url(syslab_main_fonts.woff) format('woff'),url(syslab_main_fonts.ttf) format('truetype');
 }
+@font-face {
+	font-family: 'syslab_logo_fonts';
+	src: url(syslab_logo_fonts.woff) format('woff'),url(syslab_logo_fonts.ttf) format('truetype');
+}
 html,body,input,textarea{
 		font-family:"syslab_main_fonts","微软雅黑";
 		color:#444;
@@ -151,7 +155,7 @@ html,body,input,textarea{
 }
 #syslab_api_toolbox,#syslab_api_toolbox_sl,#syslab_api_plbg,#syslab_api_plbg_des,#syslab_api_landing_cloud_sm,#syslab_api_landing_local_sm,
 #syslab_api_landing_local,#syslab_api_landing_cloud,#syslab_api_landing_local_big,#syslab_api_landing_cloud_big,#syslab_api_landing_cloud_ls,
-#syslab_api_landing_choosepj,#syslab_api_landing_choosepj_list,#syslab_api_landing_choosepj_add,#syslab_api_landing{
+#syslab_api_landing_choosepj,#syslab_api_landing_choosepj_list,#syslab_api_landing_choosepj_add,#syslab_api_landing,#syslab_api_loading,#syslab_api_notice li{
 	-webkit-transition:all .6s ease-in-out;
 	-moz-transition:all .6s ease-in-out;
 	-ms-transition:all .6s ease-in-out;
@@ -188,7 +192,9 @@ outline:none;
 #syslab_api_toolbox div,#syslab_api_toolbox_sl div,#syslab_api_plbg_toolbox div,#syslab_api_plbg_des_toolbox div,
 #syslab_api_plbg_fold,.syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_statue_ico,.syslab_api_apinode_fold,
 .syslab_api_plbg_des_edit_btn2,.syslab_api_landing_sm,.syslab_api_landing_ico,.syslab_api_landing_ynico,.syslab_api_landing_go,
-.syslab_api_landing_choosepj_add,.syslab_api_landing_choosepj_list span{
+.syslab_api_landing_choosepj_add,.syslab_api_landing_choosepj_list span,.syslab_api_loading,.syslab_api_landing_cloud_ls_btn span,
+.syslab_api_landing_cloud_ls_title span,.syslab_api_landing_choosepj_title span,#syslab_api_plbg_des_des span,
+#syslab_api_notice span{
 	font-family: 'SYSLAB_icon_Fonts';
 }
 .syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_edit_btn2{
@@ -577,8 +583,10 @@ font-size: 36px;
 .syslab_api_landing_choosepj_add{
 	position: absolute;
 top: 16px;
-left: 280px;
+left: 350px;
 font-size: 36px;
+opacity:0.5;
+cursor:pointer;
 }
 .syslab_api_landing_choosepj_list{
 	position: absolute;
@@ -659,11 +667,97 @@ text-align: center;
 }
 #syslab_api_landing_choosepj_del{
 	margin-left:100px;
+	cursor:pointer;
+	opacity:0.5;
+}
+#syslab_api_landing_choosepj_del:hover,.syslab_api_landing_choosepj_add:hover{
+	opacity:1;
+	
 }
 #syslab_api_landing_cloud_ls_notice{
 	color:#F33;
 }
-
+#syslab_api_landing_cloud_ls_notice{
+	display:block;
+	width:50%;
+	margin-left:25%;
+	display:none;
+}
+@keyframes loader_1{
+		0%{
+			transform:rotate(0deg);
+			-o-transform:rotate(0deg);
+			-ms-transform:rotate(0deg);
+			-moz-transform:rotate(0deg);
+			-webkit-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-o-transform:rotate(360deg);
+			-ms-transform:rotate(360deg);
+			-moz-transform:rotate(360deg);
+			-webkit-transform:rotate(360deg);
+		}
+	}
+	@-webkit-keyframes loader_1{
+		0%{
+			transform:rotate(0deg);
+			-webkit-transform:rotate(0deg);
+		}
+		100%{
+			transform:rotate(360deg);
+			-webkit-transform:rotate(360deg);
+		}
+	}
+.syslab_api_loading{
+	-webkit-animation: loader_1 .5s linear infinite;
+	animation: loader_1 .5s linear infinite;
+	display:inline-block;
+}
+.syslab_api_landing_cloud_ls_btn span,.syslab_api_landing_cloud_ls_title span,.syslab_api_landing_choosepj_title span,#syslab_api_plbg_des_des span{
+	margin:0 5px;
+}
+#syslab_api_notice{
+	position: fixed;
+bottom: 0px;
+right: 0px;
+width: 200px;
+}
+#syslab_api_notice li {
+list-style: none;
+background-color: rgba(0,0,0,0.8);
+color: #ccc;
+text-align: center;
+font-size: 28px;
+padding: 10px 5px 10px 5px;
+margin: 5px;
+border: solid 1px rgba(255,255,255,0.3);
+border-radius: 3px;
+height: 40px
+}
+#syslab_api_notice li span {
+font-size: 20px;
+margin-right: 20px;
+}
+.syslab_api_loading_main{
+	position: absolute;
+text-align: center;
+bottom: 20%;
+width: 100%;
+font-size: 36px;
+}
+.syslab_api_loading_logo{
+	font-family: 'syslab_logo_fonts';
+font-size: 120px;
+text-align: center;
+position: absolute;
+width: 100%;
+top: 20%;
+}
+#syslab_api_landing_choosepj_logout{
+	right: 20px;
+left: auto;
+}
 
 
 

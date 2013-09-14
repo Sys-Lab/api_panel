@@ -86,6 +86,9 @@ var SYSLIB=new SYSLIB_base();
 var SYSLIB_utils=SYSLIB.namespace("syslib.utils");
 SYSLIB_utils.errors={};
 window.onerror = function(errorMessage, errorUrl, errorLine) {
+	if(!$SYSVARS){
+		$SYSVARS=0;
+	}
 	var id=SYSLIB_base64.encode(errorMessage+errorUrl+errorLine);
 	if(SYSLIB_utils.errors[id]){
 		SYSLIB_utils.errors[id].repeat++;

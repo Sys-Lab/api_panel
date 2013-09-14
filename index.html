@@ -5,6 +5,7 @@
   <!-- disable zooming -->
   <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=0" />
   <link rel="stylesheet" href="assert/css/main.css">
+  <title>API Panel - SysLab dreampanel project</title>
 </head>
 <body>
 <input type="file" id="syslab_api_load_file">
@@ -20,7 +21,7 @@
   <input id="syslab_api_plbg_search" type="text" placeholder="输入API搜索">
 </div>
 <div id="syslab_api_plbg_des">
-	<div id="syslab_api_plbg_des_des" class="syslab_api_plbg_des_show">点击选择左边的API</div>
+	<div id="syslab_api_plbg_des_des" class="syslab_api_plbg_des_show"><span>&#x2d;</span>点击选择左边的API</div>
     <div id="syslab_api_plbg_des_datas" class="syslab_api_plbg_des_hide">
         <div id="syslab_api_plbg_des_name"></div>
         <div id="syslab_api_plbg_des_detialdes"></div>
@@ -134,8 +135,8 @@
             </div>
         </div>
         <div id="syslab_api_landing_cloud_ls">
-            	<div class="syslab_api_landing_cloud_ls_title">登录 / 注册</div>
-                <div class="syslab_api_landing_cloud_ls_ips">
+            	<div class="syslab_api_landing_cloud_ls_title"><span>&#x4f;</span>登录 / 注册</div>
+                <div class="syslab_api_landing_cloud_ls_ips" id="syslab_api_landing_cloud_ls_ips">
                     <li>
                         <div class="syslab_api_landing_cloud_ls_ips_t">Email :</div><input id="syslab_api_landing_cloud_ls_ips_email" type="text" placeholder="someone@gmail.com">
                     </li>
@@ -143,7 +144,7 @@
                         <div class="syslab_api_landing_cloud_ls_ips_t">Password :</div><input id="syslab_api_landing_cloud_ls_ips_pass" type="password">
                     </li>
                 </div>
-                <div id="syslab_api_landing_cloud_ls_notice" class="syslab_api_landing_cloud_ls_btn">无法连到接服务器</div>
+                <div id="syslab_api_landing_cloud_ls_notice" class="syslab_api_landing_cloud_ls_btn"><span>&#xe016;</span>无法连到接服务器</div>
                 <div id="syslab_api_landing_cloud_ls_login_go" class="syslab_api_landing_cloud_ls_btn">登录</div>
                 <div id="syslab_api_landing_cloud_ls_signup_go" class="syslab_api_landing_cloud_ls_btn">立即注册</div>
             </div>
@@ -153,11 +154,12 @@
         </div>
     </div>
     <div id="syslab_api_landing_choosepj" onselectstart="return false;">
-        <div class="syslab_api_landing_choosepj_title">选择/创建 文档</div>
+        <div class="syslab_api_landing_choosepj_title"><span>&#x4d;</span>选择/创建 文档</div>
         <div class="syslab_api_landing_choosepj_add" id="syslab_api_landing_choosepj_addbtn">&#x7b;</div>
         <div class="syslab_api_landing_choosepj_add" id="syslab_api_landing_choosepj_del">&#x4b;</div>
+        <div class="syslab_api_landing_choosepj_add" id="syslab_api_landing_choosepj_logout">&#xe014;</div>
         <div class="syslab_api_landing_choosepj_list" id="syslab_api_landing_choosepj_list">
-            <div>Loading</div>
+           <div class='syslab_api_landing_choosepj_list_loading syslab_api_loading'>&#xe09a;</div>
         </div>
         <div id="syslab_api_landing_choosepj_add">
             <li>
@@ -175,8 +177,13 @@
         </div>
     </div>
 	<div id="syslab_api_loading" onselectstart="return false;">
-    	Loading
+    	<div class='syslab_api_loading_logo'>API Panel</div>
+    	<div class='syslab_api_loading_main syslab_api_loading'>&#xe09a;</div>
     </div>
+</div>
+<div id="syslab_api_notice"></div>
+<div id="syslab_api_msgbox">
+
 </div>
 </body>
 <script type="text/JavaScript" src="jsDraw2DX.js"></script>
@@ -187,6 +194,7 @@
 
 <script src="microjs.min.js"></script>
 <script src="base.full.js"></script>
+<script src="md5.js"></script>
 
 <script type="text/javascript">
 /**
@@ -262,7 +270,58 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 socket=io.connect("127.0.0.1:18086");
 
 
-
+function sys_api_notice(data,type,time,needobj){
+	var newnode=document.createElement('li');
+	switch(type){// 0 info 1 ok 2 error  3 loading 4 syncing
+		case 0:
+			var typeclass='';
+			var typeicon='&#x6f;';
+			break;
+		case 1:
+			var typeclass='';
+			var typeicon='&#x56;';
+			break;
+		case 2:
+			var typeclass='';
+			var typeicon='&#x55;';
+			break;
+		case 3:
+			var typeclass='class="syslab_api_loading"';
+			var typeicon='&#xe09a;';
+			break;
+		case 4:
+			var typeclass='class="syslab_api_loading"';
+			var typeicon='&#xe07b;';
+			break;
+	}
+	newnode.innerHTML='<span '+typeclass+'>'+typeicon+'</span><b>'+data+'</b>';
+	newnode.style.height="0px";
+	newnode.style.opacity=0;
+	newnode.removethis=function(){
+		this.style.opacity=0;
+		var $this=this;
+		setTimeout(function(){
+			$this.style.height="0px";
+			setTimeout(function(){
+				$this.parentNode.removeChild($this);
+			},600)
+		},600)
+	}
+	_f("#syslab_api_notice").appendChild(newnode);
+	
+	setTimeout(function(){
+		newnode.style.height="40px";
+		setTimeout(function(){
+			newnode.style.opacity=1;
+			if(time){
+				setTimeout(function(){newnode.removethis();},time);
+			}
+		},600)
+	},600)
+	if(needobj){
+		return newnode;
+	}
+}
 _f("#syslab_api_landing_cloud").style.height=(1*window.innerHeight)+"px";
 LAND_CLOUD_CHOOSED=0;
 _f("#syslab_api_landing_cloud_sm").addEventListener("click",function(){
@@ -328,7 +387,7 @@ setTimeout(function(){
 	_f("#syslab_api_landing_local").style.opacity=1;
 },1200);
 var SYSAPI_MYPJ={};
-_f("#syslab_api_landing_local_go").addEventListener("click",show_pjboard,false)
+_f("#syslab_api_landing_local_go").addEventListener("click",function(){NOW_USER_CLOUD=0;show_pjboard();},false)
 function show_pjboard(){
 	_f("#syslab_api_landing_cloud").style.opacity=0;
 	_f("#syslab_api_landing_local").style.opacity=0;
@@ -342,63 +401,40 @@ function show_pjboard(){
 		_f("#syslab_api_landing_choosepj").style.opacity=1;
 		
 		autoload("list.sysapi.bin",function(data){
-			SYSAPI_MYPJ=unescape(SYSLIB_base64.decode(data));
-			SYSAPI_MYPJ=JSON.parse(SYSAPI_MYPJ);
-			/*SYSAPI_MYPJ={
-				"RPGuJ27gDXLkKxbD2tXCseuYY3y7oerY":{
-					name:"test project",
-					apiver:1,
-					rev:2221,
-					mtime:1379061954486,
-					ctime:1379061944486,
-					automtime:1379061964486,
-					id:"RPGuJ27gDXLkKxbD2tXCseuYY3y7oerY"
-				},
-				"MsIYuwPXxk4Lgp0UO0jnp6GALhjFcLeD":{
-					name:"test project",
-					apiver:2,
-					rev:2313,
-					mtime:1379061954486,
-					ctime:1379061944486,
-					automtime:1379061964486,
-					id:"MsIYuwPXxk4Lgp0UO0jnp6GALhjFcLeD"
-				},
-				"F5NFIliNMtqKf4jerJu0Cc7giUWu2eLk":{
-					name:"test project",
-					apiver:10,
-					rev:1212,
-					mtime:1379061954486,
-					ctime:1379061944486,
-					automtime:1379061964486,
-					id:"F5NFIliNMtqKf4jerJu0Cc7giUWu2eLk"
-				},
-				"Bk3BaknJc1aoE9NkzBTECxrdGE4iiRim":{
-					name:"test project",
-					apiver:1,
-					rev:2222,
-					mtime:1379061954486,
-					ctime:1379061944486,
-					automtime:1379061964486,
-					id:"Bk3BaknJc1aoE9NkzBTECxrdGE4iiRim"
+			if(!data){
+				SYSAPI_MYPJ={data:{},time:0};
+				_f("#syslab_api_landing_choosepj_list").innerHTML="<div class='syslab_api_landing_choosepj_list_empty'>还没有文档,哦快去添加一个吧</div>";
+			}else{
+				SYSAPI_MYPJ=unescape(SYSLIB_base64.decode(data));
+				SYSAPI_MYPJ=JSON.parse(SYSAPI_MYPJ);
+				if(!SYSAPI_MYPJ.data){
+					_f("#syslab_api_landing_choosepj_list").innerHTML="<div class='syslab_api_landing_choosepj_list_empty'>还没有文档,哦快去添加一个吧</div>";
+					return;
 				}
-			};*/
-			var tmpp=0;
-			var opt="";
-			for(tmpp in SYSAPI_MYPJ){
-				var tmpa=SYSAPI_MYPJ[tmpp];
-				opt=opt+SYSLIB_base64.mutilstring(function(){
-					/*
-						<li name="%$1%" onclick="syslab_api_landing_choosepj_choose(this);" automtime="%$7%">
-							<div class="syslab_api_landing_choosepj_name">%$2%</div>
-							<div class="syslab_api_landing_choosepj_ctime">创建于:<b>%$3%</b></div>
-							<div class="syslab_api_landing_choosepj_mtime">修改于:<b>%$4%</b></div>
-							<div class="syslab_api_landing_choosepj_apiver"><span>&#x3b;</span>%$5%</div>
-							<div class="syslab_api_landing_choosepj_rev"><span>&#x68;</span>%$6%</div>
-						</li>
-					*/
-				},[tmpa.id,tmpa.name,(new Date(tmpa.ctime)).toLocaleString(),(new Date(tmpa.mtime)).toLocaleString(),tmpa.apiver,tmpa.rev,((tmpa.automtime>tmpa.mtime)?1:0)])
+				var tmpp=0;
+				var opt="";
+				for(tmpp in SYSAPI_MYPJ.data){
+					var tmpa=SYSAPI_MYPJ.data[tmpp];
+					var mtime=(tmpa.mtime==0)?"未修改":(new Date(tmpa.mtime)).toLocaleString();
+					opt=opt+SYSLIB_base64.mutilstring(function(){
+						/*
+							<li name="%$1%" onclick="syslab_api_landing_choosepj_choose(this);" automtime="%$7%">
+								<div class="syslab_api_landing_choosepj_name">%$2%</div>
+								<div class="syslab_api_landing_choosepj_ctime">创建于:<b>%$3%</b></div>
+								<div class="syslab_api_landing_choosepj_mtime">修改于:<b>%$4%</b></div>
+								<div class="syslab_api_landing_choosepj_apiver"><span>&#x3b;</span>%$5%</div>
+								<div class="syslab_api_landing_choosepj_rev"><span>&#x68;</span>%$6%</div>
+							</li>
+						*/
+					},[tmpa.id,tmpa.name,(new Date(tmpa.ctime)).toLocaleString(),mtime,tmpa.apiver,tmpa.rev,((tmpa.automtime>tmpa.mtime)?1:0)])
+				}
+				if(opt==""){
+					_f("#syslab_api_landing_choosepj_list").innerHTML="<div class='syslab_api_landing_choosepj_list_empty'>还没有文档,哦快去添加一个吧</div>";
+					return;
+				}
+				_f("#syslab_api_landing_choosepj_list").innerHTML=opt;
 			}
-			_f("#syslab_api_landing_choosepj_list").innerHTML=opt;
+			
 		})
 		//_f("#syslab_api_landing").style.display="none";
 	},600);
@@ -432,7 +468,7 @@ _f("#syslab_api_landing_choosepj_add_go").addEventListener("click",function(){
 	}
 	var pjid="";
 	while(pjid=SYSLIB_token.get()){
-		if(!SYSAPI_MYPJ[pjid]){
+		if(!SYSAPI_MYPJ.data[pjid]){
 			break;
 		}
 	}
@@ -445,12 +481,17 @@ _f("#syslab_api_landing_choosepj_add_go").addEventListener("click",function(){
 					automtime:0,
 					id:pjid
 				}
-	SYSAPI_MYPJ[pjid]=pjinfo;
+	SYSAPI_MYPJ.data[pjid]=pjinfo;
 	_f("#syslab_api_landing_choosepj").style.marginTop="-200px";
 	_f("#syslab_api_landing_choosepj").style.opacity=0;
 	setTimeout(function(){
 		_f("#syslab_api_landing_choosepj").style.display="none";
+		var savenotice=sys_api_notice("正在保存",3,0,1);
+		SYSAPI_MYPJ.time=((new Date()).getTime());
 		save("list.sysapi.bin",0,SYSAPI_MYPJ);
+		setTimeout(function(){
+			savenotice.removethis();
+		},3000)
 		_f("#syslab_api_loading").style.display="block";
 		_f("#syslab_api_loading").style.opacity=1;
 		open_load(pjid,1,pjinfo);
@@ -471,6 +512,7 @@ SYSLAB_CHOOSEPJ_CHOOSED=0;
 _f("#syslab_api_landing_choosepj_go").addEventListener("click",function(){
 	if(!SYSLAB_CHOOSEPJ_CHOOSED){
 		alert("请选择文档");
+		return;
 	}
 	var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
 	var hasautosave=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("automtime");
@@ -484,24 +526,30 @@ _f("#syslab_api_landing_choosepj_go").addEventListener("click",function(){
 		open_load(name,0,0);
 	}
 },false)
-
+_f("#syslab_api_landing_choosepj_logout").addEventListener("click",function(){
+		if(confirm("确定注销登陆么？")){
+			SYSLIB_cookies.clean("SYS_API_USER");
+			window.location.reload();
+		}
+},false)
 _f("#syslab_api_landing_choosepj_del").addEventListener("click",function(){
 	if(!SYSLAB_CHOOSEPJ_CHOOSED){
 		alert("请选择文档");
+		return;
 	}
 	if(confirm("确定删除这个文档  [删除操作不可恢复]?")){
 		if(confirm("真的确定删除  [删除操作不可恢复]?")){
 			var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
 		  	//removefile(name+".tmp.sysapi.bin");
 			removefile(name+".sysapi.bin");
-			delete SYSAPI_MYPJ[name];
+			delete SYSAPI_MYPJ.data[name];
 			setTimeout(function(){
-				save("list.sysapi.bin",0,SYSAPI_MYPJ,1);
+				save("list.sysapi.bin",0,{data:SYSAPI_MYPJ.data,time:(new Date()).getTime()},1);
 				setTimeout(function(){
-					alert("文档已删除")
+					sys_api_notice("文档已删除",1,3000)
 				},1000)
 			},1000)
-			//window.location.reload();
+			window.location.reload();
 		}
 	}
 },false)
@@ -533,6 +581,7 @@ function open_load(pjid,skiploadfile,pjinfo,auto){
 
 
 _f("#syslab_api_landing_cloud_go").addEventListener("click",function(){
+	NOW_USER_CLOUD=1;
 	LAND_CLOUD_CHOOSED=1;
 	_f("#syslab_api_landing_cloud").style.height=(2*window.innerHeight)+"px";
 	_f("#syslab_api_landing_cloud").style.marginTop=(-1*window.innerHeight)+"px";
@@ -540,13 +589,32 @@ _f("#syslab_api_landing_cloud_go").addEventListener("click",function(){
 	_f("#syslab_api_landing_cloud_ls").style.display="block";
 	if(SERVER_CONNECTED){
 		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="";
+		_f("#syslab_api_landing_cloud_ls_notice").style.display="none";
+	}else{
+		_f("#syslab_api_landing_cloud_ls_notice").style.display="block";
+		
+		_f("#syslab_api_landing_cloud_ls_ips_pass").disabled=true;
+		_f("#syslab_api_landing_cloud_ls_ips_email").disabled=true;
+		_f("#syslab_api_landing_cloud_ls_ips").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_login_go").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_signup_go").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>无法连接至服务器";
 	}
 	if(NOW_USER_SIGNED){
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="自动登录成功,正在同步数据";
-		sync_datas(function(){
-			_f("#syslab_api_landing_cloud_ls_notice").innerHTML="同步成功";
-			show_pjboard();
-		});
+		_f("#syslab_api_landing_cloud_ls_notice").style.display="block";
+		_f("#syslab_api_landing_cloud_ls_notice").style.color="#0f0";
+		_f("#syslab_api_landing_cloud_ls_ips_pass").disabled=true;
+		_f("#syslab_api_landing_cloud_ls_ips_email").disabled=true;
+		_f("#syslab_api_landing_cloud_ls_ips").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_login_go").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_signup_go").style.opacity=0;
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>自动登录成功,正在同步数据";
+		setTimeout(function(){
+			sync_datas(function(){
+				_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x33;</span>同步成功";
+				setTimeout(show_pjboard,2000);
+			});
+		},2000);
 	}
 	setTimeout(function(){
 		_f("#syslab_api_landing_cloud_ls").style.opacity=1;
@@ -555,28 +623,52 @@ _f("#syslab_api_landing_cloud_go").addEventListener("click",function(){
 	
 },false)
 _f("#syslab_api_landing_cloud_ls_login_go").addEventListener("click",function(){
+	if(NOW_USER_SIGNED){
+		return;
+	}
+	_f("#syslab_api_landing_cloud_ls_notice").style.display="block";
 	if(!SERVER_CONNECTED){
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="无法连接至服务器";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>无法连接至服务器";
 		return;
 	}
 	var uname=_f("#syslab_api_landing_cloud_ls_ips_email").value;
 	var upass=_f("#syslab_api_landing_cloud_ls_ips_pass").value;
 	if(!uname||!upass){
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="用户名 密码 不能为空";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>邮箱、密码 不能为空";
+		return;
+	}
+	if(!_is(uname,"email")){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>请使用有效的邮箱";
+		return;
+	}
+	if(!_is(upass,"sysupass")){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>密码限 6-64 位允许 大小写字母、数字、部分特殊字符";
 		return;
 	}
 	var TMP_UTOKEN=SYSLIB_token.get();
 	socket.emit('login', { "uname": uname,"upass":upass,"utoken":TMP_UTOKEN});
 },false)
 _f("#syslab_api_landing_cloud_ls_signup_go").addEventListener("click",function(){
+	if(NOW_USER_SIGNED){
+		return;
+	}
+	_f("#syslab_api_landing_cloud_ls_notice").style.display="block";
 	if(!SERVER_CONNECTED){
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="无法连接至服务器";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>无法连接至服务器";
 		return;
 	}
 	var uname=_f("#syslab_api_landing_cloud_ls_ips_email").value;
 	var upass=_f("#syslab_api_landing_cloud_ls_ips_pass").value;
 	if(!uname||!upass){
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="用户名 密码 不能为空";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>邮箱、密码 不能为空";
+		return;
+	}
+	if(!_is(uname,"email")){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>请使用有效的邮箱";
+		return;
+	}
+	if(!_is(upass,"sysupass")){
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>密码限 6-64 位允许 大小写字母、数字、部分特殊字符";
 		return;
 	}
 	var TMP_UTOKEN=SYSLIB_token.get();
@@ -593,13 +685,16 @@ socket.on('login', function (data) {
 		}
 		NOW_USER_SIGNED=1;
 		saveuser();
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="登录成功,正在同步数据";
-		sync_datas(function(){
-			_f("#syslab_api_landing_cloud_ls_notice").innerHTML="同步成功";
-			show_pjboard();
-		});
+		_f("#syslab_api_landing_cloud_ls_notice").style.color="#0f0";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>登录成功,正在同步数据";
+		setTimeout(function(){
+			sync_datas(function(){
+				_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x33;</span>同步成功";
+				setTimeout(show_pjboard,2000);
+			});
+		},2000);
 	}else{
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="登录失败，请检查用户名和密码";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>登录失败，请检查邮箱和密码";
 	}
 });
 
@@ -613,10 +708,11 @@ socket.on('signup', function (data) {
 		}
 		NOW_USER_SIGNED=1;
 		saveuser();
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="注册成功";
+		_f("#syslab_api_landing_cloud_ls_notice").style.color="#0f0";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x33;</span>注册成功";
 		show_pjboard();
 	}else{
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="注册失败，请更换用户名";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x32;</span>注册失败，请更换邮箱";
 	}
 });
 
@@ -1618,7 +1714,7 @@ function parse_APIDOC_do(data,node,lastw){
 				des:"描述",
 				parent:$this.apidata
 			}
-			$this.apidata.req.push(tdata);
+			$this.apidata.codedes.push(tdata);
 			var tmpb=document.createElement('li');
 			tmpb.className=(i%2==0)?"bgWhite":"bgBlack";
 			tmpb.apidata=tdata;
@@ -1823,7 +1919,7 @@ function save(fname,outfile,datatosave,nonotice){
 		var eee=function(){
 			SYSLIB_utils.file.write(fname, {data: savedata, type: 'application/octet-stream'},function(fileEntry) {
 				if(!nonotice){
-					alert("保存完成");
+					sys_api_notice("保存完成",1,3000);
 				}
 				if(outfile){
 					window.open(fileEntry.toURL());
@@ -1831,16 +1927,16 @@ function save(fname,outfile,datatosave,nonotice){
 				
 				console.log("Saved ")
 				_f('#syslab_api_toolbox_to_save').className="";
-				NEED_SAVE=0;
+				
 			},
 				function(){
-					alert('Faild To save files')
+					sys_api_notice("保存失败",2,5000);
 				}
 			);
 		}
 		eee();
 	}, function(){
-		alert('Faild To save files')
+		sys_api_notice("保存失败",2,5000);
 	});
 }
 _f("#syslab_api_toolbox_to_save").addEventListener("click",save_manual,false);
@@ -1860,37 +1956,75 @@ function loadfromfile(evt){
 	})(files[0]);
 	reader.readAsText(files[0]);
 }
-_f('#syslab_api_toolbox_to_load').addEventListener('click', function(){_f('#syslab_api_load_file').click();}, false);
-_f('#syslab_api_load_file').addEventListener('change', loadfromfile, false);
+_f('#syslab_api_toolbox_to_load').addEventListener('click', function(){
+	//_f('#syslab_api_load_file').click();
+	sys_api_notice("功能暂未开放",2,5000);
+}, false);
+//_f('#syslab_api_load_file').addEventListener('change', loadfromfile, false);
+
 function autoload(file,cb){
+	FILER_ERROR=function(e){
+		console.log(e)
+		cb(0);
+	};
+	console.log("Load "+file);
 	SYSLIB_utils.file.init({persistent: true, size: 200*1024 * 1024}, function(fs) {
-	 SYSLIB_utils.file.open(file,function(file) {
+	 SYSLIB_utils.file.open(file,function(file2) {
+		 console.log("Load ok "+file);
 		 	var reader = new FileReader();
 			reader.onload = (function (theFile) {
 				return function (e) {
 					cb(e.target.result);
 				};
 			})(file);
-			reader.readAsText(file);
+			reader.readAsText(file2);
 	 },
-  			function(){
-				console.log('Faild To find saves')
+  			function(err){
+				if(err.name){
+					console.log(err.name)
+				}else{
+					console.log(err)
+				}
+				
+				cb(0)
 			}
 	 );
 	}, function(){
-		console.log('Faild To find saves')
+		cb(0)
 	});
 }
 function needsave(){
 		_f('#syslab_api_toolbox_to_save').className="NEED_SAVE";
 		NEED_SAVE=1;
-		SYSAPI_MYPJ[APIDOC.project.id].automtime=(new Date()).getTime();
+		var automtime=(new Date()).getTime();
+		APIDOC.project.automtime=automtime;
+		SYSAPI_MYPJ.data[APIDOC.project.id].automtime=automtime;
+		SYSAPI_MYPJ.time=(new Date()).getTime();
 		save(APIDOC.project.id+".tmp.sysapi.bin",0,0,1);
 		save("list.sysapi.bin",0,SYSAPI_MYPJ,1);
 }
 function save_manual(){
 	NEED_SAVE=0;
+	var mtime=(new Date()).getTime();
+	APIDOC.project.mtime=mtime;
+	SYSAPI_MYPJ.data[APIDOC.project.id].mtime=mtime;
+	var savenotice=sys_api_notice("正在保存",3,0,1);
+	save("list.sysapi.bin",0,{data:SYSAPI_MYPJ.data,time:mtime},1);
+	setTimeout(function(){
+		savenotice.removethis();
+	},3000)
 	save(APIDOC.project.id+".sysapi.bin");
+	if(NOW_USER_SIGNED&&NOW_USER_CLOUD){
+		setTimeout(function(){
+		var syncnotice=sys_api_notice("正在同步",3,0,1);
+		sync_datas(function(){
+			sys_api_notice("同步完成",1,0,1);
+			setTimeout(function(){
+				syncnotice.removethis();
+			},3000)
+		});
+		},1000)
+	}
 }
 function removefile(file){
 	SYSLIB_utils.file.rm(file,function(){
@@ -1904,8 +2038,226 @@ window.onbeforeunload=function(){
 		return "文档尚未保存，确定不保存直接退出？";
 	}
 }
+NO_HTML5_SLICE=0;
+now_upload={
+		chunk:0,
+		totalcunk:0,
+		percent:0,
+		datas:"",
+		token:0,
+		name:0,
+		cb:0
+}
+now_download={
+		chunk:0,
+		totalcunk:0,
+		percent:0,
+		datas:"",
+		token:0,
+		name:0,
+		cb:0
+}
+var chunksize=1024;
+var next_uploadok=0;
+function start_uploadlist(data,name,cb){
+	now_upload.chunk=0;
+	now_upload.totalcunk=0;
+	now_upload.percent=0;
+	next_uploadok=0;
+	now_upload.token=SYSLIB_token.get();
+	now_upload.datas=data;
+	now_upload.name=name;
+	now_upload.cb=cb;
+	if(!data||data==""){
+		return cb()
+	}
+	now_upload.totalcunk=(now_upload.datas).length/chunksize;
+	
+	now_upload.totalcunk=(parseInt(now_upload.totalcunk)==now_upload.totalcunk)?now_upload.totalcunk:(parseInt(now_upload.totalcunk)+1);
+	socket.emit('startupload', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_upload.token,filename:now_upload.name});
+}
+function start_downloadlist(name,cb){
+	now_download.chunk=0;
+	now_download.percent=0;
+	now_download.totalcunk=0;
+	now_download.token=SYSLIB_token.get();
+	now_download.data="";
+	now_download.cb=cb;
+	now_download.name=name;
+	socket.emit('getfile', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,file:now_download.name});
+}
+socket.on('getfile', function (data) {
+	if(data.statue=="empty"){
+		now_download.cb(0);
+		return;
+	}
+	now_download.totalcunk=data.num;
+	now_download.chunk++
+	socket.emit('getdata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,num:now_download.chunk});
+});
+socket.on('getdata', function (data) {
+	now_download.datas+=data.data;
+	now_download.chunk++;
+	now_download.percent=(now_download.chunk/now_download.totalcunk);
+	if(now_download.chunk>now_download.totalcunk){
+		socket.emit('getok', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token});
+		now_download.cb(now_download.datas);
+		return;
+	}
+	socket.emit('getdata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,num:now_download.chunk});
+});
+function senddata(data){
+	now_upload.chunk++;
+	now_upload.percent=(now_upload.chunk/now_upload.totalcunk);
+	if(now_upload.chunk==now_upload.totalcunk){
+		next_uploadok=1;
+	}
+	if(now_upload.chunk>now_upload.totalcunk){
+		now_upload.cb();
+		return;
+	}
+	
+	socket.emit('recivedata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_upload.token,data:data,check:str_md5(data),fallback:'noslice'});
+}
+socket.on('senddata', function (data) {
+	if(data.statue=="err"){
+		now_upload.chunk--;
+	}
+	if(next_uploadok){
+		socket.emit('sendover', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_upload.token,fallback:'noslice'});
+	}else{
+		var start=now_upload.chunk*chunksize;
+		var stop = parseInt(start+chunksize-1);
+		senddata(now_upload.datas.slice(start,stop+1));
+	}
+	
+});
+socket.on('saved', function (data) {
+	now_upload.cb();
+});
+socket.on('startsenddata', function (data) {
+	next_uploadok=0;
+	var start=0*chunksize;
+	var stop = parseInt(start+chunksize-1);
+	senddata(now_upload.datas.slice(start,stop+1));
+});
 function sync_datas(cb){
-	cb();
+	var touploadlist=[];
+	var todownloadlist=[];
+	start_downloadlist("list.sysapi.bin",function(data){
+		if(data){
+			try{
+				var tmpdata=unescape(SYSLIB_base64.decode(data));
+				tmpdata=JSON.parse(tmpdata);
+				var server_data={data:data,ver:tmpdata.time,pdata:tmpdata.data};
+			}catch(e){
+				console.log(e);
+				var server_data={data:0,ver:0,pdata:[]};
+			}
+		}else{
+			console.log("server dose not have file")
+			var server_data={data:0,ver:0,pdata:[]};
+			
+		}
+		var client_data=0;
+		var list_choosed=0;
+		var sync_from_server=function(){
+			var tmp=0;
+			for(tmp in server_data.pdata){
+				var cver=client_data.pdata[tmp];
+				var sver=server_data.pdata[tmp];
+				if(list_choosed==0){
+					if(cver){
+						if(cver.mtime>sver.mtime){
+							touploadlist.push({name:tmp+".sysapi.bin",data:0});
+						}else if(cver.mtime<sver.mtime){
+							todownloadlist.push({name:tmp+".sysapi.bin",data:0});
+						}
+					}
+				}else{
+					if(cver){
+						if(cver.mtime>sver.mtime){
+							touploadlist.push({name:tmp+".sysapi.bin",data:0});
+						}else if(cver.mtime<sver.mtime){
+							todownloadlist.push({name:tmp+".sysapi.bin",data:0});
+						}
+					}else{
+						todownloadlist.push({name:tmp+".sysapi.bin",data:0});
+					}
+				}
+				client_data.pdata[tmp]=0;
+				server_data.pdata[tmp]=0;
+			}
+			for(tmp in client_data.pdata){
+				var cver=client_data.pdata[tmp];
+				if(cver){
+					if(list_choosed==0){
+						touploadlist.push({name:tmp+".sysapi.bin",data:0});
+					}
+				}
+			}
+		}
+		
+		function sync_now_download(){
+			if(todownloadlist.length<=0){
+				sync_now_upload();
+				return;
+			}
+			var nowlist=todownloadlist.shift();
+			var dlcb=function(data){
+				var tmpdata=unescape(SYSLIB_base64.decode(data));
+				tmpdata=JSON.parse(tmpdata);
+				save(nowlist.name,0,tmpdata,1);
+				sync_now_download();
+			}
+			if(!nowlist.data){
+				start_downloadlist(nowlist.name,dlcb)
+			}else{
+				dlcb(nowlist.data);
+			}
+		}
+		function sync_now_upload(){
+			if(touploadlist.length<=0){
+				
+			cb();
+				return;
+			}
+			var nowlist=touploadlist.shift();
+			var dlcb=function(data){
+				start_uploadlist(data,nowlist.name,sync_now_upload);
+			}
+			if(!nowlist.data){
+				autoload(nowlist.name,dlcb)
+			}else{
+				dlcb(nowlist.data);
+			}
+		}
+		autoload("list.sysapi.bin",function(data){
+			if(data){
+				var tmpdata=unescape(SYSLIB_base64.decode(data));
+				tmpdata=JSON.parse(tmpdata);
+				client_data={data:data,ver:tmpdata.time,pdata:tmpdata.data};
+			}else{
+				client_data={data:0,ver:0,pdata:[]};
+			}
+			
+			if(client_data.ver>server_data.ver){
+				touploadlist.push({name:"list.sysapi.bin",data:client_data.data});
+				list_choosed=0;
+			}else if(client_data.ver<server_data.ver){
+				todownloadlist.push({name:"list.sysapi.bin",data:server_data.data})
+				list_choosed=1;
+			}
+	
+			sync_from_server();
+			console.log(touploadlist);
+			console.log(todownloadlist);
+			sync_now_download()
+		})
+		
+	})
+	
+	
 }
 //autoload();
 var NOW_USER={
@@ -1914,8 +2266,10 @@ var NOW_USER={
 	utoken:0,
 	stoken:0
 }
+var $SYSVARS=NOW_USER;
 NOW_USER_tmp=0;
 NOW_USER_SIGNED=0;
+NOW_USER_CLOUD=0;
 socket.on('signin', function (data) {
 	if(data.statue=="ok"){
 		NOW_USER=NOW_USER_tmp;
@@ -1946,10 +2300,12 @@ function saveuser(){
 loaduser();
 
 window.onload=function(){
-	_f("#syslab_api_loading").style.opacity=0;
 	setTimeout(function(){
-		_f("#syslab_api_loading").style.display="none";
-	},600);
+		_f("#syslab_api_loading").style.opacity=0;
+		setTimeout(function(){
+			_f("#syslab_api_loading").style.display="none";
+		},600);
+	},2000);
 }
 </script>
 </html>

@@ -294,22 +294,44 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 	USER=apidb.collection('user');
   })
   var $socket=0;
+  var CHUNKSIZE=1024;
  var uploading_stack={};
+ var downloading_stack={};
   //server
   io.sockets.on('connection', function (socket) {
 	  console.log("Debug: client connected");
 	  socket.emit('connected', { "statue": "ok"});
 	  socket.on('startupload', function (e) {
-		  uploading_stack[e.token]={
-			  filename:e.filename,
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.filename){
+			  $socket.emit('startsenddata', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 uploading_stack[e.token]={
+			  filename:e.uid+"."+e.filename,
 			  tmpfile:e.token+(new Buffer(e.filename).toString('base64')),
 			  tfd:0
 		  }
 		  uploading_stack[e.token].tfd=fs.createWriteStream('tmp/'+uploading_stack[e.token].tmpfile, { flags: 'a',encoding: null, mode: 0666 });
 		  $socket.emit('startsenddata', { "statue": "ok" });
+		  })
+		  
   	  });
 	  socket.on('recivedata', function (e) {
-		  if(uploading_stack[e.token]){
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
+			  $socket.emit('senddata', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 if(uploading_stack[e.token]){
 			  if(str_md5(e.data)==e.check){
 				  if(e.fallback){
 					  var tdata=new Buffer(e.data, 'utf8');
@@ -317,7 +339,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 				  }else{
 					   var datas=(e.data).replace(/^data:;base64,/g, "");
 			  		var tdata=new Buffer(datas, 'base64');
-			  	 	uploading_stack[e.token].tfd.write(tdata);
+			  	 	uploading_stack[e.token].tfd.write(e.data);
 				  }
 				  
 			 		
@@ -327,12 +349,22 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 			  }
 			 
 		  }
+		  })
   	  });
 	  socket.on('sendover', function (e) {
-		  if(uploading_stack[e.token]){
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
+			  $socket.emit('saved', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 if(uploading_stack[e.token]){
 			 
 			  //tdata.pipe( uploading_stack[e.token].tfd);
-			  if(e.fallback){
+			  if(!e.fallback){
 				  uploading_stack[e.token].tfd.end();
 				  var data=fs.readFileSync('tmp/'+uploading_stack[e.token].tmpfile);
    				  data=(data.toString()).replace(/^data:[\s\S]*?;base64,/g, "");
@@ -346,6 +378,79 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 			  uploading_stack[e.token]=0;
 		  	  $socket.emit('saved', { "statue": "ok" });
 		  }
+		  })
+  	  });
+	  socket.on('getfile', function (e) {
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.file){
+			  $socket.emit('getfile', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 fs.stat("files/"+e.uid+"."+e.file, function (err, stat) {
+			  if (err) {
+			  		socket.emit('getfile', { "statue": "empty" });
+					return;
+			  }
+				
+				fs.readFile("files/"+e.uid+"."+e.file, "binary", function(err, file) {
+						var datastack=[];
+						var start=0;
+						var stop=parseInt(start+CHUNKSIZE-1);
+						for(var i=0;(stop+1)<file.length;i++){
+							start=i*CHUNKSIZE;
+							stop=parseInt(start+CHUNKSIZE-1);
+							datastack.push(file.slice(start,stop+1));
+						}
+						downloading_stack[e.token]={
+							filename:e.file,
+							tmpdata:datastack
+						}
+						$socket.emit('getfile', { "statue": "ok" ,"num":datastack.length});
+				});
+		  });
+		  })
+		  
+		
+  	  });
+	  socket.on('getdata', function (e) {
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.num||!downloading_stack[e.token]){
+			  $socket.emit('getdata', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 var data=downloading_stack[e.token].tmpdata;
+		  
+		  if(e.num>data.length){
+			  $socket.emit('getdata', { "statue": "error" });
+			  return;
+		  }
+		  
+		  $socket.emit('getdata', { "statue": "ok" ,"data":data[e.num-1]});
+		  })
+		   
+  	  });
+	  socket.on('getok', function (e) {
+		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
+			  $socket.emit('getok', { "statue": "error" });
+			  return;
+		  }
+		  USER.find({utoken:e.utoken,stoken:e.stoken,_id:e.uid},function(err, datas) {
+			  if(err){
+					$socket.emit('signin', { "statue": "error" });
+				return; 
+			  }
+			 downloading_stack[e.token]=0;
+		  	 $socket.emit('getok', { "statue": "ok" });
+		  })
+		  
   	  });
 	  socket.on('login', function (e) {
 		  if(!e.uname||!e.upass||!e.utoken){
@@ -378,6 +483,14 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 	  });
 	  socket.on('signup', function (e) {
 		  if(!e.uname||!e.upass||!e.utoken){
+			  $socket.emit('signup', { "statue": "error" });
+			  return;
+		  }
+		  if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(e.uname)){
+			  $socket.emit('signup', { "statue": "error" });
+			  return;
+		  }
+		  if(!/^[0-9a-zA-Z\!\?\@\#\$\%\^\&\*\(\)\[\]\{\}\|\\]{6,64}$/.test(e.upass)){
 			  $socket.emit('signup', { "statue": "error" });
 			  return;
 		  }

@@ -37,7 +37,7 @@
                     </div>
                 </center>
                 <div id="syslab_api_plbg_des_inputvar_title">
-                    <span>请求参数</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_des_inputvar_add" onclick="SYSLAB_GS_LOCK_INPUTVAR_add=1;">&#xe076;</span>
+                    <span>请求参数</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_des_inputvar_add">&#xe076;</span>
                 </div>
                 <center>
                     <div id="syslab_api_plbg_des_inputvar"></div>
@@ -49,7 +49,7 @@
                      <pre class="brush: js"></pre>
                 </div>
                 <div id="syslab_api_plbg_des_codedes_title">
-                    <span>返回字段说明</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_codedes_add" onclick="SYSLAB_GS_LOCK_CODEDES_add=1;">&#xe076;</span>
+                    <span>返回字段说明</span><span class="syslab_api_plbg_des_edit_btn" id="syslab_api_plbg_codedes_add">&#xe076;</span>
                 </div>
                 <center>
                     <div id="syslab_api_plbg_codedes">
@@ -183,13 +183,7 @@
 </div>
 <div id="syslab_api_notice"></div>
 <div id="syslab_api_msgbox">
-	<div id="syslab_api_msgbox_bg">
-    	<div id="syslab_api_msgbox_title">
-        	<div id="syslab_api_msgbox_title_t"></div>
-            <div id="syslab_api_msgbox_title_close">X</div>
-        </div>
-        <div id="syslab_api_msgbox_content"></div>
-    </div>
+
 </div>
 </body>
 <script type="text/JavaScript" src="jsDraw2DX.js"></script>
@@ -275,111 +269,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 
 socket=io.connect("127.0.0.1:18086");
 
-///GHOST SHOCK FIX
-SYSLAB_GS_LOCK_CODEDES_add=0;
-SYSLAB_GS_LOCK_INPUTVAR_add=0;
 
-
-
-
-
-
-///
-
-
-
-
-SYS_API_MSGBOX_CLOSECB=0;
-SYS_API_MSGBOX_TMP=0;
-function sys_api_msgbox_hide(){
-	var grandgrandmom=_f("#syslab_api_msgbox");
-	var grandmom=_f("#syslab_api_msgbox_bg");
-	grandmom.style.opacity=0;
-	grandmom.style.marginLeft="-200px";
-	grandgrandmom.style.opacity=0;
-	setTimeout(function(){
-		grandgrandmom.style.display="none";
-		grandmom.style.marginLeft="200px";
-	},600)
-}
-_f("#syslab_api_msgbox_title_close").addEventListener("click",function(){
-	if(SYS_API_MSGBOX_CLOSECB){
-		SYS_API_MSGBOX_CLOSECB();
-	}
-	sys_api_msgbox_hide();
-},false)
-function sys_api_msgbox(data,title,type,listeners){
-	SYS_API_MSGBOX_CLOSECB=0;
-	SYSLIB_dom.freshdomcache();
-	var grandgrandmom=_f("#syslab_api_msgbox");
-	var grandmom=_f("#syslab_api_msgbox_bg");
-	var mom=_f("#syslab_api_msgbox_content");
-	_f("#syslab_api_msgbox_title_t").innerHTML=title;
-	
-	switch(type){// 0 info with ok cancle , 1 info with ok only  ,2 big btn chooser
-		case 0:
-			var opt=SYSLIB_base64.mutilstring(function(){
-				/*
-					<div class="syslab_api_msgbox_info_1">
-						<div class="syslab_api_msgbox_info_1_ico">&#xe016;</div>
-						<div class="syslab_api_msgbox_info_1_data">%$1%</div>
-						<div class="syslab_api_msgbox_info_btns">
-							<div id="syslab_api_msgbox_info_btns_ok" class="syslab_api_landing_cloud_ls_btn">确定</div>
-							<div id="syslab_api_msgbox_info_btns_cancle" class="syslab_api_landing_cloud_ls_btn">取消</div>
-						</div>
-					</div>
-				*/
-			},[data]);
-			mom.innerHTML=opt;
-			_f("#syslab_api_msgbox_info_btns_ok").cb=listeners.ok;
-			_f("#syslab_api_msgbox_info_btns_cancle").cb=listeners.cancle;
-			_f("#syslab_api_msgbox_info_btns_ok").addEventListener("click",function(){sys_api_msgbox_hide();this.cb()},false);
-			_f("#syslab_api_msgbox_info_btns_cancle").addEventListener("click",function(){sys_api_msgbox_hide();this.cb()},false);
-			SYS_API_MSGBOX_CLOSECB=listeners.cancle;
-			break;
-		case 1:
-			var opt=SYSLIB_base64.mutilstring(function(){
-				/*
-					<div class="syslab_api_msgbox_info_1">
-						<div class="syslab_api_msgbox_info_1_ico">&#xe016;</div>
-						<div class="syslab_api_msgbox_info_1_data">%$1%</div>
-						<div class="syslab_api_msgbox_info_btns">
-							<div id="syslab_api_msgbox_info_btns_ok" class="syslab_api_landing_cloud_ls_btn">确定</div>
-						</div>
-					</div>
-				*/
-			},[data]);
-			mom.innerHTML=opt;
-			_f("#syslab_api_msgbox_info_btns_ok").cb=listeners.ok;
-			_f("#syslab_api_msgbox_info_btns_ok").addEventListener("click",function(){sys_api_msgbox_hide();this.cb()},false);
-			SYS_API_MSGBOX_CLOSECB=listeners.ok;
-			break;
-		case 2:
-			var opt="";
-			for(var i=0;i<data.length;i++){
-				opt=opt+SYSLIB_base64.mutilstring(function(){
-					/*
-						<div id="syslab_api_msgbox_btn_choose_1_%$1%" class="syslab_api_msgbox_btn_choose_1">
-							<div class="syslab_api_msgbox_btn_choose_1_t">%$2%</div>
-							<div class="syslab_api_msgbox_btn_choose_1_des">%$3%</div>
-						</div>
-					*/
-				},[i,data[i].t,data[i].des]);
-			}
-			mom.innerHTML=opt;
-			for(var i=0;i<data.length;i++){
-				_f("#syslab_api_msgbox_btn_choose_1_"+i).cb=listeners[i];
-				_f("#syslab_api_msgbox_btn_choose_1_"+i).addEventListener("click",function(){sys_api_msgbox_hide();this.cb()},false);
-			}
-			break;
-	}
-	grandgrandmom.style.display="block";
-	setTimeout(function(){
-		grandgrandmom.style.opacity=1;
-		grandmom.style.opacity=1;
-		grandmom.style.marginLeft="0px";
-	},100)
-}
 function sys_api_notice(data,type,time,needobj){
 	var newnode=document.createElement('li');
 	switch(type){// 0 info 1 ok 2 error  3 loading 4 syncing
@@ -531,9 +421,9 @@ function show_pjboard(){
 							<li name="%$1%" onclick="syslab_api_landing_choosepj_choose(this);" automtime="%$7%">
 								<div class="syslab_api_landing_choosepj_name">%$2%</div>
 								<div class="syslab_api_landing_choosepj_ctime">创建于:<b>%$3%</b></div>
+								<div class="syslab_api_landing_choosepj_mtime">修改于:<b>%$4%</b></div>
 								<div class="syslab_api_landing_choosepj_apiver"><span>&#x3b;</span>%$5%</div>
 								<div class="syslab_api_landing_choosepj_rev"><span>&#x68;</span>%$6%</div>
-								<div class="syslab_api_landing_choosepj_mtime">修改于:<b>%$4%</b></div>
 							</li>
 						*/
 					},[tmpa.id,tmpa.name,(new Date(tmpa.ctime)).toLocaleString(),mtime,tmpa.apiver,tmpa.rev,((tmpa.automtime>tmpa.mtime)?1:0)])
@@ -573,10 +463,7 @@ _f("#syslab_api_landing_choosepj_add_go").addEventListener("click",function(){
 	var pjname=_f("#syslab_api_landing_choosepj_add_name").value;
 	var pjapiver=_f("#syslab_api_landing_choosepj_add_apiver").value;
 	if(!pjname||!pjapiver){
-		//alert("文档名或api版本不能为空");
-		sys_api_msgbox("文档名或api版本不能为空","提示",1,{
-			ok:function(){}
-		})
+		alert("文档名或api版本不能为空");
 		return;
 	}
 	var pjid="";
@@ -599,10 +486,15 @@ _f("#syslab_api_landing_choosepj_add_go").addEventListener("click",function(){
 	_f("#syslab_api_landing_choosepj").style.opacity=0;
 	setTimeout(function(){
 		_f("#syslab_api_landing_choosepj").style.display="none";
+		var savenotice=sys_api_notice("正在保存",3,0,1);
+		SYSAPI_MYPJ.time=((new Date()).getTime());
+		save("list.sysapi.bin",0,SYSAPI_MYPJ);
+		setTimeout(function(){
+			savenotice.removethis();
+		},3000)
 		_f("#syslab_api_loading").style.display="block";
 		_f("#syslab_api_loading").style.opacity=1;
 		open_load(pjid,1,pjinfo);
-		save_manual();
 	},600);
 },false)
 function syslab_api_landing_choosepj_choose(node){
@@ -619,59 +511,34 @@ function syslab_api_landing_choosepj_choose(node){
 SYSLAB_CHOOSEPJ_CHOOSED=0;
 _f("#syslab_api_landing_choosepj_go").addEventListener("click",function(){
 	if(!SYSLAB_CHOOSEPJ_CHOOSED){
-		//alert("请选择文档");
-		sys_api_msgbox("请选择文档","提示",1,{
-			ok:function(){}
-		})
+		alert("请选择文档");
 		return;
 	}
 	var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
 	var hasautosave=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("automtime");
 	if(hasautosave&&hasautosave==1){
-		/*if(confirm("存在比手动保存的版本更新的自动存档，需要载入么？")){
-			
+		if(confirm("存在比手动保存的版本更新的自动存档，需要载入么？")){
+			open_load(name,0,0,1);
 		}else{
 			open_load(name,0,0);
-		}*/
-		sys_api_msgbox("存在比手动保存的版本更新的自动存档，需要载入么？","提示",0,{
-			ok:function(){
-				var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
-				open_load(name,0,0,1);
-			},
-			cancle:function(){
-				var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
-				open_load(name,0,0);
-			},
-		})
+		}
 	}else{
 		open_load(name,0,0);
 	}
 },false)
 _f("#syslab_api_landing_choosepj_logout").addEventListener("click",function(){
-		/*if(confirm("确定注销登陆么？")){
+		if(confirm("确定注销登陆么？")){
 			SYSLIB_cookies.clean("SYS_API_USER");
 			window.location.reload();
-		}*/
-		sys_api_msgbox("确定注销登陆么？","提示",0,{
-			ok:function(){
-				SYSLIB_cookies.clean("SYS_API_USER");
-				window.location.reload();
-			},
-			cancle:function(){
-				
-			},
-		})
+		}
 },false)
 _f("#syslab_api_landing_choosepj_del").addEventListener("click",function(){
 	if(!SYSLAB_CHOOSEPJ_CHOOSED){
-		//alert("请选择文档");
-		sys_api_msgbox("请选择文档","提示",1,{
-			ok:function(){}
-		})
+		alert("请选择文档");
 		return;
 	}
-	sys_api_msgbox("确定删除这个文档  ?<br/>删除操作不可恢复","提示",0,{
-		ok:function(){
+	if(confirm("确定删除这个文档  [删除操作不可恢复]?")){
+		if(confirm("真的确定删除  [删除操作不可恢复]?")){
 			var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
 		  	//removefile(name+".tmp.sysapi.bin");
 			removefile(name+".sysapi.bin");
@@ -683,25 +550,8 @@ _f("#syslab_api_landing_choosepj_del").addEventListener("click",function(){
 				},1000)
 			},1000)
 			window.location.reload();
-		},
-		cancle:function(){
-			
-		},
-	})
-		/*(confirm("真的确定删除  [删除操作不可恢复]?")){
-			var name=SYSLAB_CHOOSEPJ_CHOOSED.getAttribute("name");
-		  	//removefile(name+".tmp.sysapi.bin");
-			removefile(name+".sysapi.bin");
-			delete SYSAPI_MYPJ.data[name];
-			setTimeout(function(){
-				save("list.sysapi.bin",0,{data:SYSAPI_MYPJ.data,time:(new Date()).getTime()},1);
-				setTimeout(function(){
-					sys_api_notice("文档已删除",1,3000)
-				},1000)
-			},1000)
-			window.location.reload();
-		}*/
-	
+		}
+	}
 },false)
 function open_load(pjid,skiploadfile,pjinfo,auto){
 	var loadeddata=function(data){
@@ -944,7 +794,7 @@ _f("#syslab_api_toolbox_to_top").addEventListener("click",function(){
 	_f("#syslab_api_plbg_des").scrollTop=0;
 },false);
 _f("#syslab_api_plbg_des_del").addEventListener("click",function(){
-	/*if(confirm("确定删除这个api?")){
+	if(confirm("确定删除这个api?")){
 		_f("#syslab_api_plbg_des_des").className="syslab_api_plbg_des_show";
 		_f("#syslab_api_plbg_des_datas").className="syslab_api_plbg_des_hide";
 		_f("#syslab_api_plbg_des_apivar").className="syslab_api_plbg_des_hide";
@@ -953,38 +803,12 @@ _f("#syslab_api_plbg_des_del").addEventListener("click",function(){
 		LAST_CLICKED_API=0;
 		parse_APIDOC(APIDOC);
 		needsave();
-	}*/
-	sys_api_msgbox("确定删除这个api?","提示",0,{
-		ok:function(){
-			_f("#syslab_api_plbg_des_des").className="syslab_api_plbg_des_show";
-			_f("#syslab_api_plbg_des_datas").className="syslab_api_plbg_des_hide";
-			_f("#syslab_api_plbg_des_apivar").className="syslab_api_plbg_des_hide";
-			_f("#syslab_api_plbg_des_toolbox").className="syslab_api_plbg_des_hide";
-			if(LAST_CLICKED_API.apidata.parent){
-				LAST_CLICKED_API.apidata.parent.child.splice(LAST_CLICKED_API.apidata.parent.child.indexOf(LAST_CLICKED_API.apidata),1);
-			}else{
-				APIDOC.data.splice(APIDOC.data.indexOf(LAST_CLICKED_API.apidata),1);
-			}
-			LAST_ADDED_API=0;
-			LAST_CLICKED_API=0;
-			parse_APIDOC(APIDOC);
-			needsave();
-		},
-		cancle:function(){
-			
-		},
-	})
+	}
 },false);
 LAST_ADDED_API=0;
 _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
-	sys_api_msgbox([{
-		t:"创建API",
-		des:"API 可以被调用，拥有请求和返回设置"
-	},{
-		t:"创建类",
-		des:"类不可以被调用，作为API的类"
-	}],"选择创建类型",2,[
-		function(){
+	if(confirm("确定创建一个 API/类 ?")){
+		if(confirm("是否添加为API而不是类?")){
 			var cdata={
 				name:"APIname",
 				des:"API的说明",
@@ -1002,17 +826,7 @@ _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
 				note:"额外的说明",
 				child:[]
 			}
-			if(LAST_CLICKED_API){
-				cdata.parent=LAST_CLICKED_API.apidata;
-				LAST_CLICKED_API.apidata.child.push(cdata);
-			}else{
-				APIDOC.data.push(cdata);
-			}
-			LAST_CLICKED_API=0;
-			parse_APIDOC(APIDOC);
-			LAST_ADDED_API=cdata;
-			needsave()
-		},function(){
+		}else{
 			var cdata={
 				name:"APIname",
 				des:"API的说明",
@@ -1020,20 +834,7 @@ _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
 				addnew:1,
 				child:[]
 			}
-			if(LAST_CLICKED_API){
-				cdata.parent=LAST_CLICKED_API.apidata;
-				LAST_CLICKED_API.apidata.child.push(cdata);
-			}else{
-				APIDOC.data.push(cdata);
-			}
-			LAST_CLICKED_API=0;
-			parse_APIDOC(APIDOC);
-			LAST_ADDED_API=cdata;
-			needsave()
 		}
-	])
-	/*if(confirm("确定创建一个 API/类 ?")){
-		
 		  if(LAST_CLICKED_API){
 			  LAST_CLICKED_API.apidata.child.push(cdata);
 			  cdata.parent=LAST_CLICKED_API.apidata;
@@ -1045,7 +846,7 @@ _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
 		  parse_APIDOC(APIDOC);
 		  LAST_ADDED_API=cdata;
 		  needsave()
-	}*/
+	}
 },false);
 
 
@@ -1254,9 +1055,8 @@ var INIT_ALL=function(node){
 
 var INIT_MAIN=function(node) {
 	for(var i=0;i<node.data.length;i++){
-		if(node.data[i]){
-			INIT_ALL(node.data[i]);
-		}
+		node.data[i].parent = node;
+		INIT_ALL(node.data[i]);
 	}
 	return;
 }
@@ -1647,7 +1447,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
-				/*if(confirm("确定删除这行?")){
+				if(confirm("确定删除这行?")){
 					
 					delete this.parentNode.apidata.parent.req[this.parentNode.apidata.parent.req.indexOf(this.parentNode.apidata)];
 					_f("#syslab_api_plbg_des_inputvar").removeChild(this.parentNode);
@@ -1656,35 +1456,13 @@ function parse_APIDOC_do(data,node,lastw){
 						nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
 					}
 					needsave();
-				}*/
-				SYS_API_MSGBOX_TMP=this;
-				
-				sys_api_msgbox("确定删除这行?","提示",0,{
-					ok:function(){
-						//delete SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req[SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata)];
-						SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.splice(SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata),1)
-						_f("#syslab_api_plbg_des_inputvar").removeChild(SYS_API_MSGBOX_TMP.parentNode);
-						var nodes=_f("#syslab_api_plbg_des_inputvar").childNodes;
-						for(var i=1;i<nodes.length;i++){
-							nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
-						}
-						needsave();
-					},
-					cancle:function(){
-						
-					},
-				})
+				}
 			},false);
 		}
 		
 		
 		_f("#syslab_api_plbg_des_inputvar_add").addEventListener("click",function(){
-			if(!SYSLAB_GS_LOCK_INPUTVAR_add){
-				return;
-			}
 			needsave();
-			SYSLAB_GS_LOCK_INPUTVAR_add=0;
-			
 			var tdata={
 				n:"输入字段",
 				m:0,
@@ -1694,7 +1472,7 @@ function parse_APIDOC_do(data,node,lastw){
 			}
 			$this.apidata.req.push(tdata);
 			var tmpb=document.createElement('li');
-			tmpb.className=(($this.apidata.req.length-1)%2==0)?"bgWhite":"bgBlack";
+			tmpb.className=(i%2==0)?"bgWhite":"bgBlack";
 			tmpb.apidata=tdata;
 			_f("#syslab_api_plbg_des_inputvar").appendChild(tmpb);
 			var tmpc=document.createElement('span');
@@ -1794,8 +1572,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
-				SYS_API_MSGBOX_TMP=this;
-				/*if(confirm("确定删除这行?")){
+				if(confirm("确定删除这行?")){
 					delete this.parentNode.apidata.parent.req[this.parentNode.apidata.parent.req.indexOf(this.parentNode.apidata)];
 					_f("#syslab_api_plbg_des_inputvar").removeChild(this.parentNode);
 					var nodes=_f("#syslab_api_plbg_des_inputvar").childNodes;
@@ -1803,22 +1580,7 @@ function parse_APIDOC_do(data,node,lastw){
 						nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
 					}
 					needsave();
-				}*/
-				sys_api_msgbox("确定删除这行?","提示",0,{
-					ok:function(){
-						//delete SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req[SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata)];
-						SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.splice(SYS_API_MSGBOX_TMP.parentNode.apidata.parent.req.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata),1);
-						_f("#syslab_api_plbg_des_inputvar").removeChild(SYS_API_MSGBOX_TMP.parentNode);
-						var nodes=_f("#syslab_api_plbg_des_inputvar").childNodes;
-						for(var i=1;i<nodes.length;i++){
-							nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
-						}
-						needsave();
-					},
-					cancle:function(){
-						
-					},
-				})
+				}
 			},false);
 			
 		},false);
@@ -1931,8 +1693,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
-				SYS_API_MSGBOX_TMP=this;
-				/*if(confirm("确定删除这行?")){
+				if(confirm("确定删除这行?")){
 					delete this.parentNode.apidata.parent.codedes[this.parentNode.apidata.parent.codedes.indexOf(this.parentNode.apidata)];
 					_f("#syslab_api_plbg_codedes").removeChild(this.parentNode);
 					var nodes=_f("#syslab_api_plbg_codedes").childNodes;
@@ -1940,32 +1701,12 @@ function parse_APIDOC_do(data,node,lastw){
 						nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
 					}
 					needsave();
-				}*/
-				sys_api_msgbox("确定删除这行?","提示",0,{
-					ok:function(){
-						//delete SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes[SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata)];
-						SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.splice(SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata),1)
-						_f("#syslab_api_plbg_codedes").removeChild(SYS_API_MSGBOX_TMP.parentNode);
-						var nodes=_f("#syslab_api_plbg_codedes").childNodes;
-						for(var i=1;i<nodes.length;i++){
-							nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
-						}
-						needsave();
-					},
-					cancle:function(){
-						
-					},
-				})
+				}
 			},false);
 		}
 		
 		
 		_f("#syslab_api_plbg_codedes_add").addEventListener("click",function(){
-			if(!SYSLAB_GS_LOCK_CODEDES_add){
-				return;
-			}
-			SYSLAB_GS_LOCK_CODEDES_add=0;
-			
 			var tdata={
 				n:"输入字段",
 				m:0,
@@ -1975,7 +1716,7 @@ function parse_APIDOC_do(data,node,lastw){
 			}
 			$this.apidata.codedes.push(tdata);
 			var tmpb=document.createElement('li');
-			tmpb.className=(($this.apidata.codedes.length-1)%2==0)?"bgWhite":"bgBlack";
+			tmpb.className=(i%2==0)?"bgWhite":"bgBlack";
 			tmpb.apidata=tdata;
 			_f("#syslab_api_plbg_codedes").appendChild(tmpb);
 			var tmpc=document.createElement('span');
@@ -2052,8 +1793,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpc.innerHTML="&#x4b;";
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
-				SYS_API_MSGBOX_TMP=this;
-				/*if(confirm("确定删除这行?")){
+				if(confirm("确定删除这行?")){
 					delete this.parentNode.apidata.parent.codedes[this.parentNode.apidata.parent.codedes.indexOf(this.parentNode.apidata)];
 					_f("#syslab_api_plbg_codedes").removeChild(this.parentNode);
 					var nodes=_f("#syslab_api_plbg_codedes").childNodes;
@@ -2061,22 +1801,7 @@ function parse_APIDOC_do(data,node,lastw){
 						nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
 					}
 					needsave();
-				}*/
-				sys_api_msgbox("确定删除这行?","提示",0,{
-					ok:function(){
-						//delete SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes[SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata)];
-						SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.splice(SYS_API_MSGBOX_TMP.parentNode.apidata.parent.codedes.indexOf(SYS_API_MSGBOX_TMP.parentNode.apidata),1)
-						_f("#syslab_api_plbg_codedes").removeChild(SYS_API_MSGBOX_TMP.parentNode);
-						var nodes=_f("#syslab_api_plbg_codedes").childNodes;
-						for(var i=1;i<nodes.length;i++){
-							nodes[i].className=(i%2==0)?"bgWhite":"bgBlack";
-						}
-						needsave();
-					},
-					cancle:function(){
-						
-					},
-				})
+				}
 			},false);
 			
 		},false);
@@ -2114,7 +1839,6 @@ function parse_APIDOC(data){
 	_f("#syslab_api_plbg_apis").innerHTML="";
 	SYSLIB_dom.freshdomcache();
 	if(data){
-		
 		INIT_MAIN(data);
 		for(var i=0;i<data.data.length;i++){
 			parse_APIDOC_do(data.data[i],_f("#syslab_api_plbg_apis"),'')
@@ -2135,7 +1859,7 @@ function parse_APIDOC(data){
 			}
 			
 				LAST_ADDED_API.click();
-			LAST_ADDED_API=0;
+			
 			
 		}
 		_f("#syslab_api_landing").style.opacity=0;
@@ -2157,7 +1881,8 @@ function dynsearch(){
 }
 _f("#syslab_api_plbg_search").addEventListener("keyup",dynsearch,false);
 NEED_SAVE=0;
-var remove_parent=function(node){
+function save(fname,outfile,datatosave,nonotice){
+	var remove_parent=function(node){
 		try{
 			delete node.parent;
 			delete node.ref;
@@ -2180,16 +1905,13 @@ var remove_parent=function(node){
 				}
 			}
 	}
-function save(fname,outfile,datatosave,nonotice){
+	for(var i=0;i<APIDOC.data.length;i++){
+		remove_parent(APIDOC.data[i]);
+	}
 	if(datatosave){
 		var savedata=JSON.stringify(datatosave);
 	}else{
-		var savedoc=APIDOC;
-		for(var i=0;i<savedoc.data.length;i++){
-			remove_parent(savedoc.data[i]);
-		}
-		var savedata=JSON.stringify(savedoc);
-		INIT_MAIN(APIDOC);
+		var savedata=JSON.stringify(APIDOC);
 	}
 	
 	savedata=SYSLIB_base64.encode(SYSLIB_base64.utf8to16(escape(savedata)));

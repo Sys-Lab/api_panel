@@ -155,12 +155,20 @@ html,body,input,textarea{
 }
 #syslab_api_toolbox,#syslab_api_toolbox_sl,#syslab_api_plbg,#syslab_api_plbg_des,#syslab_api_landing_cloud_sm,#syslab_api_landing_local_sm,
 #syslab_api_landing_local,#syslab_api_landing_cloud,#syslab_api_landing_local_big,#syslab_api_landing_cloud_big,#syslab_api_landing_cloud_ls,
-#syslab_api_landing_choosepj,#syslab_api_landing_choosepj_list,#syslab_api_landing_choosepj_add,#syslab_api_landing,#syslab_api_loading,#syslab_api_notice li{
+#syslab_api_landing_choosepj,#syslab_api_landing_choosepj_list,#syslab_api_landing_choosepj_add,#syslab_api_landing,#syslab_api_loading,
+#syslab_api_notice li{
 	-webkit-transition:all .6s ease-in-out;
 	-moz-transition:all .6s ease-in-out;
 	-ms-transition:all .6s ease-in-out;
 	-o-transition:all .6s ease-in-out;
 	transition:all .6s ease-in-out;
+}
+#syslab_api_msgbox,#syslab_api_msgbox_bg{
+	-webkit-transition:all .4s ease-in-out;
+	-moz-transition:all .4s ease-in-out;
+	-ms-transition:all .4s ease-in-out;
+	-o-transition:all .4s ease-in-out;
+	transition:all .4s ease-in-out;
 }
 body{
 	background-color:#D2D2D2;
@@ -194,7 +202,7 @@ outline:none;
 .syslab_api_plbg_des_edit_btn2,.syslab_api_landing_sm,.syslab_api_landing_ico,.syslab_api_landing_ynico,.syslab_api_landing_go,
 .syslab_api_landing_choosepj_add,.syslab_api_landing_choosepj_list span,.syslab_api_loading,.syslab_api_landing_cloud_ls_btn span,
 .syslab_api_landing_cloud_ls_title span,.syslab_api_landing_choosepj_title span,#syslab_api_plbg_des_des span,
-#syslab_api_notice span{
+#syslab_api_notice span,.syslab_api_msgbox_info_1_ico{
 	font-family: 'SYSLAB_icon_Fonts';
 }
 .syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_edit_btn2{
@@ -625,21 +633,22 @@ width: 200px;
 }
 .syslab_api_landing_choosepj_mtime{
 	float: right;
-top: -15px;
+top: -34px;
 font-size: 12px;
 position: relative;
+right: -45px;
 }
 .syslab_api_landing_choosepj_apiver{
 	float: right;
 position: relative;
-top: -60px;
-left: 70px;
+top: -75px;
+right: 70px;
 }
 .syslab_api_landing_choosepj_rev{
 	float: right;
 position: relative;
-top: -60px;
-left: 160px;
+top: -75px;
+right: 0px;
 }
 #syslab_api_landing_choosepj_go{
 	position: absolute;
@@ -758,10 +767,87 @@ top: 20%;
 	right: 20px;
 left: auto;
 }
-
-
-
-
-
-
+#syslab_api_msgbox{
+	position:absolute;
+	top:0px;
+	left:0px;
+	bottom:0px;
+	right:0px;
+	background-color:rgba(0,0,0,0.8);
+	text-align:center;
+	display:none;
+	opacity:0;
+}
+#syslab_api_msgbox_bg{
+	margin-top: 10%;
+background-color: #444;
+display: inline-block;
+border: solid 1px #aaa;
+border-radius: 3px;
+opacity:0;
+margin-left:200px;
+}
+#syslab_api_msgbox_title{
+	background-color: rgba(0,0,0,0.6);
+height: 40px;
+}
+#syslab_api_msgbox_title_t{
+	float: left;
+margin-left: 5px;
+font-size: 24px;
+margin-top: 3px;
+color: #ccc;
+cursor:default;
+}
+#syslab_api_msgbox_title_close{
+	float: right;
+margin-right: 10px;
+font-size: 24px;
+cursor:pointer;
+margin-top: 3px;
+}
+#syslab_api_msgbox_title_close:hover{
+	color:#ccc;
+}
+.syslab_api_msgbox_btn_choose_1 {
+width: 300px;
+display: inline-block;
+height: 250px;
+margin: 20px;
+border: solid 2px rgba(255,255,255,0.1);
+border-radius: 5px;
+cursor:pointer;
+color:#ccc;
+}
+.syslab_api_msgbox_btn_choose_1:hover {
+	background-color:rgba(255,255,255,0.1);
+}
+.syslab_api_msgbox_btn_choose_1_t {
+font-size: 32px;
+margin-top: 20px;
+}
+.syslab_api_msgbox_btn_choose_1_des {
+margin-top: 100px;
+}
+.syslab_api_msgbox_info_1{
+	color:#ccc;
+	text-align: left;
+	padding: 10px;
+}
+.syslab_api_msgbox_info_1_ico{
+	display: inline-block;
+font-size: 82px;
+}
+.syslab_api_msgbox_info_1_data {
+font-size: 24px;
+display: inline-block;
+padding: 10px;
+position: relative;
+top: -25px;
+}
+.syslab_api_msgbox_info_btns {
+position: relative;
+width: 100%;
+text-align: center;
+}
 

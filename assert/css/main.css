@@ -603,7 +603,7 @@ left: 20px;
 right: 20px;
 text-align: center;
 }
-.syslab_api_landing_choosepj_list li{
+.syslab_api_landing_choosepj_listitem{
 	display:inline-block;
 	width: 500px;
 text-align: left;
@@ -616,38 +616,37 @@ height:60px;
 padding:5px;
 cursor:pointer;
 }
-.syslab_api_landing_choosepj_list li:hover,.syslab_api_landing_choosepj_list_choosed{
+.syslab_api_landing_choosepj_listitem:hover,.syslab_api_landing_choosepj_list_choosed{
 	background-color: rgba(255,255,255,0.2) !important;
 }
 .syslab_api_landing_choosepj_name{
 	display: inline-block;
-float: left;
 font-size: 20px;
 width: 350px;
 }
 .syslab_api_landing_choosepj_ctime{
 	font-size: 12px;
-margin-top: 45px;
-left: -350px;
-width: 200px;
+margin-top: 19px;
+width: 400px;
 }
 .syslab_api_landing_choosepj_mtime{
 	float: right;
-top: -34px;
+top: -18px;
 font-size: 12px;
 position: relative;
-right: -45px;
+right: -252px;
+width: 400px;
 }
 .syslab_api_landing_choosepj_apiver{
 	float: right;
 position: relative;
-top: -75px;
+top: -65px;
 right: 70px;
 }
 .syslab_api_landing_choosepj_rev{
 	float: right;
 position: relative;
-top: -75px;
+top: -65px;
 right: 0px;
 }
 #syslab_api_landing_choosepj_go{
@@ -850,4 +849,20 @@ position: relative;
 width: 100%;
 text-align: center;
 }
-
+.syslab_api_loading_build{
+	position:absolute;
+	bottom:5px;
+	right:5px;
+}
+.syslab_api_loading_build{
+	position:absolute;
+	bottom:5px;
+	right:5px;
+	cursor:pointer;
+}
+.syslab_api_loading_tech{
+	position:absolute;
+	bottom:5px;
+	left:5px;
+	cursor:pointer;
+}

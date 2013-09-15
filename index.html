@@ -179,6 +179,8 @@
 	<div id="syslab_api_loading" onselectstart="return false;">
     	<div class='syslab_api_loading_logo'>API Panel</div>
     	<div class='syslab_api_loading_main syslab_api_loading'>&#xe09a;</div>
+        <div class='syslab_api_loading_tech'><span onClick="window.open('http://nodejs.org/');">NodeJs</span> <span onClick="window.open('http://www.mongodb.org/');">MongoDb</span> <span onClick="window.open('http://socket.io/');">Socket.IO</span> <span>HTML5</span></div>
+        <div class='syslab_api_loading_build' onClick="window.open('https://github.com/Sys-Lab/api_panel');">Open source on Github .&nbsp;&nbsp;&nbsp;v 2013091501</div>
     </div>
 </div>
 <div id="syslab_api_notice"></div>
@@ -528,13 +530,13 @@ function show_pjboard(){
 					var mtime=(tmpa.mtime==0)?"未修改":(new Date(tmpa.mtime)).toLocaleString();
 					opt=opt+SYSLIB_base64.mutilstring(function(){
 						/*
-							<li name="%$1%" onclick="syslab_api_landing_choosepj_choose(this);" automtime="%$7%">
+							<div class="syslab_api_landing_choosepj_listitem" name="%$1%" onclick="syslab_api_landing_choosepj_choose(this);" automtime="%$7%">
 								<div class="syslab_api_landing_choosepj_name">%$2%</div>
 								<div class="syslab_api_landing_choosepj_ctime">创建于:<b>%$3%</b></div>
 								<div class="syslab_api_landing_choosepj_apiver"><span>&#x3b;</span>%$5%</div>
 								<div class="syslab_api_landing_choosepj_rev"><span>&#x68;</span>%$6%</div>
 								<div class="syslab_api_landing_choosepj_mtime">修改于:<b>%$4%</b></div>
-							</li>
+							</div>
 						*/
 					},[tmpa.id,tmpa.name,(new Date(tmpa.ctime)).toLocaleString(),mtime,tmpa.apiver,tmpa.rev,((tmpa.automtime>tmpa.mtime)?1:0)])
 				}

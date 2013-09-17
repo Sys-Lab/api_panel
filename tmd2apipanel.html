@@ -1,0 +1,2506 @@
+﻿<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <!-- disable zooming -->
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=0" />
+  <style>
+ #codes,#log{
+	 position:relative;
+	 width:100%;
+	 min-width:90%;
+ }
+  </style>
+  <title>TMD to API Panel doc json</title>
+</head>
+<body>
+<textarea id="codes">
+#Title=FBAPI For Project Shirt-T
+#Project=Project Shirt-T
+#API Level=1
+#Version=2013040401
+
+-------
+#:User
+-------
+
+-----------------------------------------------------------------------------
+#User.signup
+
+~JSON:POST:False:False
+
+@Request
+email.|.true.|.string.|.邮箱
+u_name.|.false.|.string.|.用户昵称
+u_pass.|.true.|.string.|.密码
+re_u_pass.|.true.|.string.|.确认密码
+u_token.|.true.|.string.|.用户端token
+captcha.|.false.|.string.|.验证码
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {
+    "user": {
+      "address": "",
+      "u_name": "hello",
+      "gender": "",
+      "t_coin": 0,
+      "mobile": "",
+      "phone": "",
+      "truename": "",
+      "_id": "515d3e1c4cc54304f533fbf1",
+      "s_token": "d47b5bec9ddec3da8031bfa751328d48",
+      "u_token": "d47b5bec9ddec3da8031bfa751328d48",
+      "size": ""
+      ...
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+address.|.string.|.地址
+u_name.|.string.|.昵称
+gender.|.string.|.性别 male/female
+t_coin.|.int.|.积分
+phone.|.string.|.电话
+truename.|.string.|.真实姓名
+_id.|.string.|.用户id
+s_token.|.string.|.服务端token
+size.|.string.|.尺码 S/M/L/XL/XXL
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#User.signin
+
+~JSON:POST:False:False
+
+@Request
+email.|.true.|.string.|.email
+u_pass.|.true.|.string.|.密码
+u_token.|.true.|.string.|.用户端token
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {
+    "user": {
+      "address": "",
+      "t_coin": 0,
+      "gender": "",
+      "phone": "",
+      "u_name": "hello",
+      "truename": "",
+      "_id": "515d3e1c4cc54304f533fbf1",
+      "s_token": "612ebdfe3036168d0e065b9824f857b2",
+      "u_token": "612ebdfe3036168d0e065b9824f857b2",
+      "size": ""
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+address.|.string.|.地址
+u_name.|.string.|.昵称
+gender.|.string.|.性别 male/female
+t_coin.|.int.|.积分
+phone.|.string.|.电话
+truename.|.string.|.真实姓名
+_id.|.string.|.用户id
+s_token.|.string.|.服务端token
+size.|.string.|.尺码 S/M/L/XL/XXL
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#User.socialsignin
+
+~JSON:GET:False:False
+
+@Request
+type.|.true.|.string.|. weibo/qq/renren/douban
+@End
+
+@:code
+@code
+
+@Return
+@End
+
+@:notice
+本页面会跳转，并返回js
+@notice
+
+-----------------------------------------------------------------------------
+#User.socialbind
+
+~JSON:GET:False:False
+
+@Request
+type.|.true.|.string.|. weibo/qq/renren/douban
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+@End
+
+@:code
+@code
+
+@Return
+本页面会跳转，并返回js
+@End
+
+@:notice
+@notice
+
+-----------------------------------------------------------------------------
+#User.signout
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {}
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#User.check.*
+
+~JSON:GET/POST:False:False
+
+@Request
+*.|.true.|.string.|.u_name/email
+value.|.true.|.string.|.check的值
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {
+    "exist": false
+  }
+}
+
+{
+  "flag": "ok",
+  "data": {
+    "exist": true
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+exist.|.bool.|.是否已存在
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#User.check.login
+
+~JSON:POST:False:False
+
+@Request
+u_id.|.true.|.用户id
+u_token.|.true.|.用户端token
+s_token.|.true.|.服务端token
+@
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+
+-----------------------------------------------------------------------------
+#User.get.*
+
+~JSON:POST:True/False:False
+
+@Request
+*.|.true.|.string.|.用户信息 all表示请求全部
+u_id.|.true.|.用户id
+u_token.|.false.|.用户端token
+s_token.|.false.|.服务端token
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {
+    "user": {
+      "u_name": "hello",
+      "_id": "515d3e1c4cc54304f533fbf1"
+    }
+  }
+}
+
+{
+  "flag": "ok",
+  "data": {
+    "user": {
+      "gender": "",
+      "_id": "515d3e1c4cc54304f533fbf1",
+      "u_name": "hello",
+      "t_coin": 0
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+如没有u_token, s_token即请求该u_id的用户的信息。
+@notice
+
+-----------------------------------------------------------------------------
+#User.get.item
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.用户id
+u_token.|.true.|.用户端token
+s_token.|.true.|.服务端token
+limit.|.true.|.限制数量
+skip.|.true.|.位移
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "user": {
+            "items": [
+                {
+                    "status": "submitted",
+                    "d_id": "51a7091b98fca1073b92e7c1",
+                    "u_id": "51a5a26698fca10b2f83c934",
+                    "description": "1234567890",
+                    "tags": [],
+                    "price": "12.0",
+                    "i_name": "12345",
+                    "d_im_id": "51a7017598fca105e5dfdb99",
+                    "created_time": "2013-05-30T18:55:1369911336",
+                    "images": [],
+                    "_id": "51a7302898fca10e99b846f1"
+                }
+            ],
+            "items_count": 1
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+@notice
+
+-----------------------------------------------------------------------------
+#User.get.order
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.用户id
+u_token.|.true.|.用户端token
+s_token.|.true.|.服务端token
+limit.|.true.|.限制数量
+skip.|.true.|.位移
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "user": {
+            "orders": [
+                {
+                    "status": "submitted",
+                    "remark": "",
+                    "i_name": "12345",
+                    "mobile": "",
+                    "gender": "",
+                    "price": 22,
+                    "e_id": "51ab4f0898fca13fb431fdd0",
+                    "i_id": "51a7365798fca10fc62af0ac",
+                    "truename": "",
+                    "i_price": 12,
+                    "size": "",
+                    "address": "",
+                    "e_price": 10,
+                    "e_company": "",
+                    "u_id": "51a5a26698fca10b2f83c934",
+                    "d_im_id": "51a5a26698fca10b2f83c934",
+                    "_id": "51ab4f0898fca13fb431fdd1",
+                    "i_description": "1234567890",
+                    "quantity": ""
+                }
+            ],
+            "orders_count": 1 
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+@notice
+
+-----------------------------------------------------------------------------
+#User.set.*
+
+~JSON:POST:True:False
+
+@Request
+*.|.true.|.string.|.用户信息
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+value.|.修改普通信息时需.|.string.|.修改的值
+o_u_pass.|.修改密码时需.|.string.|.原密码
+n_u_pass.|.修改密码时需.|.string.|.新密码
+re_u_pass.|.修改密码时需.|.string.|.确认新密码
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#User.reset.*
+
+~JSON:POST:False:False
+
+@Request
+*.|.true.|.string.|. u_pass.byemail/u_pass.byu_name
+email.|.通过邮箱找回密码时需.|.string.|.email
+u_name.|.通过昵称找回密码时需.|.string.|.昵称
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+--------
+#:Notification
+--------
+
+-----------------------------------------------------------------------------
+#Notification.get
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+last_update_time.|.true.|.string.|.时间戳 eg.1375514695
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "notifications": [
+            {
+                "category": "message",
+                "status": "unread",
+                "_id": "51fcb2a698fca1025e110b0e",
+                "content": "hello4",
+                "created_time": "2013-08-03T15:35:1375515302",
+                "u_id": "51a5a26698fca10b2f83c934"
+            }
+        ]
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+
+status:
+'submitted' | 'deleted'
+
+@End
+
+@:notice
+@notice
+
+-----------------------------------------------------------------------------
+#Notification.mark
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+n_id.|.true.|.string.|.提醒id
+type.|.true.|.string.|.标记类别 比如'read','unread'
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Notification.delete
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+n_id.|.true.|.string.|.提醒id
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+--------
+#:Design
+--------
+
+-----------------------------------------------------------------------------
+#Design.add
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+code.|.true.|.json.|.设计编码
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "design": {
+            "status": "submitted",
+            "_id": "51aaf11798fca11622b7585f",
+            "f_im_id": "51a7017598fca105e5dfdb99",
+            "b_im_id": "51a7017598fca105e5dfdb99",
+            "code": [
+                {
+                    "styles": {
+                        "opacity": 1
+                    },
+                    "width": 1200,
+                    "image": "51a7015698fca105ce72612f",
+                    "pos": {
+                        "y": 200,
+                        "x": 0,
+                        "z": 1
+                    },
+                    "height": 1200
+                }
+            ],
+            "created_time": "2013-06-02T15:15:1370157335",
+            "u_id": "51a5a26698fca10b2f83c934"
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+
+status:
+'submitted' | 'deleted'
+
+@End
+
+@:notice
+code的编码格式可以参照返回值
+    "code": [
+      {
+        "styles": {
+          "opacity": 0.5
+        }, 
+        "width": 200, 
+        "image": "base64code", 
+        "pos": {
+          "y": 200, 
+          "x": 200, 
+          "z": 1
+        }, 
+        "height": 200
+      }, 
+      {
+        "styles": {
+          "opacity": 1
+        }, 
+        "width": 200, 
+        "image": "base64code", 
+        "pos": {
+          "y": 200, 
+          "x": 300, 
+          "z": 2
+        }, 
+        "height": 200
+      }, 
+      {
+        "styles": {
+          "opacity": 0.2
+        }, 
+        "width": 200, 
+        "image": "base64code", 
+        "pos": {
+          "y": 300, 
+          "x": 200, 
+          "z": 3
+        }, 
+        "height": 200
+      }
+    ], 
+ 
+@notice
+
+-----------------------------------------------------------------------------
+#Design.get.*
+
+~JSON:POST:True:False
+
+@Request
+*.|.true.|.string.|.用户信息 all表示请求全部
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+d_id.|.true.|.string.|.设计id
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "design": {
+            "status": "deleted",
+            "code": [
+                {
+                    "styles": {
+                        "opacity": 1
+                    },
+                    "width": 1200,
+                    "image": "51a7015698fca105ce72612f",
+                    "pos": {
+                        "y": 200,
+                        "x": 0,
+                        "z": 1
+                    },
+                    "height": 1200
+                }
+            ],
+            "f_im_id": "51a7017598fca105e5dfdb99",
+            "b_im_id": "51a7017598fca105e5dfdb99",
+            "_id": "51a7091b98fca1073b92e7c1",
+            "created_time": "2013-05-30T16:08:1369901339",
+            "u_id": "51a5a26698fca10b2f83c934"
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Design.get.cost
+
+~JSON:POST:True:False
+
+@Request
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "double": 40,
+        "single": 30
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Design.update
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+d_id.|.true.|.string.|.设计id
+code.|.true.|.json.|.设计编码
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Design.delete
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+d_id.|.true.|.string.|.设计id
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+
+-------
+#:END
+-------
+
+-------
+#:Item
+-------
+
+-----------------------------------------------------------------------------
+#Item.add
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+args.|.true.|.json.|.包含信息 i_name d_id price tags description images
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "item": {
+            "status": "submitted",
+            "d_id": "51a7091b98fca1073b92e7c1",
+            "u_id": "51a5a26698fca10b2f83c934",
+            "user": {
+                "_id": "51a5a26698fca10b2f83c934",
+                "u_name": "hello"
+            }
+            "description": "1234567890",
+            "tags": [],
+            "price": "12.0",
+            "i_name": "12345",
+            "d_f_im_id": "51a7017598fca105e5dfdb99",
+            "d_b_im_id": "51a7017598fca105e5dfdb99",
+            "created_time": "2013-06-02T15:18:1370157480",
+            "images": [],
+            "_id": "51aaf1a898fca11622b75860"
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+args 中信息:
+i_name.|.true.|.string.|.item名称
+d_id.|.true.|.string.|.设计id
+tags.|.true.|.array.|.标签id数组
+description.|.true.|.string.|.item描述
+images.|.true.|.array.|.图片id数组
+
+如无描述等信息，就认为是用来自己购买的商品
+
+status:
+'submitted' | 'verifying' | 'denied' | 'approved'     | 'deleted'
+@notice
+
+-----------------------------------------------------------------------------
+#Item.get.*
+
+~JSON:GET/POST:False:False
+
+@Request
+*.|.true.|.string.|.用户信息 all表示请求全部
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+i_id.|.true.|.string.|.商品id
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "status": "deleted",
+        "d_f_im_id": "51a7017598fca105e5dfdb99",
+        "d_b_im_id": "51a7017598fca105e5dfdb99",
+        "u_id": "51a5a26698fca10b2f83c934",
+        "description": "1234567890",
+        "tags": [],
+        "price": "12.0",
+        "i_name": "12345",
+        "d_id": "51a7091b98fca1073b92e7c1",
+        "images": [],
+        "created_time": "2013-05-30T19:21:1369912919",
+        "_id": "51a7365798fca10fc62af0ac"
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Item.set
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+i_id.|.true.|.string.|.item id
+args.|.true.|.json.|.包含信息 i_name design tags description images
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+args 中信息:
+i_name.|.true.|.string.|.item名称
+tags.|.true.|.array.|.标签id数组
+description.|.true.|.string.|.item描述
+images.|.true.|.array.|.图片id数组
+@notice
+
+-----------------------------------------------------------------------------
+#Item.delete
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+i_id.|.true.|.string.|.item id
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+
+-------
+#:END
+-------
+
+-------
+#:Order
+-------
+
+-----------------------------------------------------------------------------
+#Order.add
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+args.|.true.|.json.|.包含信息 i_id truename gender size mobile address e_company quantity remark 
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "order": {
+      "_id": "dljajdlakjdlkjal"
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+
+status:
+'submitted' | 'cancelled' | 'paid' | 'producing' | 'produced' | 'delivering' | 'success' | 'refund'
+
+@End
+
+@:notice
+args 中的信息:
+i_id.|.true.|.string.|.产品id
+truename.|.true.|.string.|.收货人姓名
+gender.|.true.|.string.|.性别 male | female
+size.|.true.|.string.|.t恤尺寸 S | M | L | XL | XXL 
+mobile.|.true.|.string.|.收货手机号码
+phone.|.false.|.string.|.收货电话号码
+address.|.true.|.string.|.收货地址
+address_code.|.true.|.string.|.地址的编号
+quantity.|.true.|.string.|.数量
+remark.|.false.|.array.|.备注
+@notice
+
+-----------------------------------------------------------------------------
+#Order.get.*
+
+~JSON:GET/POST:False:False
+
+@Request
+*.|.true.|.string.|.用户信息 all表示请求全部
+o_id.|.true.|.string.|.订单id
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "order": {
+            "status": "cancelled",
+            "remark": "speed up",
+            "u_id": "51a5a26698fca10b2f83c934",
+            "i_id": "51a7365798fca10fc62af0ac",
+            "quantity": "1",
+            "mobile": "18200259232",
+            "gender": "male",
+            "price": "12.0",
+            "i_name": "12345",
+            "i_description": "1234567890",
+            "truename": "陈松松",
+            "i_price": "12.0",
+            "d_f_im_id": "51a7017598fca105e5dfdb99",
+            "d_b_im_id": "51a7017598fca105e5dfdb99",
+            "address": "四川省成都市电子科技大学",
+            "_id": "51aabd6198fca1037988a41e",
+            "size": "M"
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Order.set
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+o_id.|.true.|.string.|.订单id
+args.|.true.|.json.|.包含信息 truename mobile phone address 
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+只能修改部分信息
+truename, mobile, phone, address 
+@notice
+
+-----------------------------------------------------------------------------
+#Order.cancel
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+o_id.|.true.|.string.|.订单id
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+
+-------
+#:END
+-------
+
+-------
+#:Tag
+-------
+
+-----------------------------------------------------------------------------
+#Tag.add
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+t_name.|.true.|.string.|.tag名称
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "tag": {
+      "_id": "dlkajdlakjk",
+      "t_name": "shirt"
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#tag.get
+
+~JSON:GET/POST:False:False
+
+@Request
+t_id.|.true.|.string.|.tag id
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "tag": {
+      "_id": "5162c89d4cc543101568ecf0",
+      "t_name": "djaldj" 
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Image
+-------
+
+-----------------------------------------------------------------------------
+#Image.upload
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+image.|.true.|.string.|.图片的base64
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "image": {
+      "_id": "dlkajdlakjk",
+    }
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Image.uploadavatar
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+image.|.true.|.string.|.图片的base64
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {}
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#image/*.png
+
+~JSON:GET:False:False
+
+@Request
+*.|.true.|.string.|.im_id 图片id + [ _ + thumbnail | num x num ]
+@End
+
+@:code
+返回图片
+@code
+
+@Return
+@End
+
+@:notice
+eg.image/517549b198fca10a21a06ebe.png
+eg.image/517549b198fca10a21a06ebe_thumbnail.png
+eg.image/517549b198fca10a21a06ebe_100x100.png
+@notice
+
+-----------------------------------------------------------------------------
+#Image.filter
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+image.|.true.|.string.|.图片的base64
+filter_type.|.true.|.string.|.滤镜种类
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "image": "base64" 
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+filter_type:
+
+1.PIL basic
+    blur
+    contour
+    detail
+    edge_enhance
+    edge_enhance_more
+    emboss
+    find_edges
+    smooth
+    smooth_more
+    sharpen
+
+2.
+    invert 负像处理
+    interleaving 交叉反转
+    contrast 对比度调整 默认为0 @ 
+    aqua 碧绿
+    colorize 颜色渲染 @ 
+    comic 连环画
+    darkness 暗调
+    diffuse 扩散
+    find_edge 查找边缘
+    glowing_edge 照亮边缘
+    ice 冰冻
+    inosculate 图像融合 @ 
+    lighting 灯光 默认在中央照亮
+    magic 图像合成魔术图 @ 
+    moire_fringe 摩尔纹
+    molten 熔铸
+    mosaic 马赛客
+    oil_painting 油画
+    oil_painting2 油画2 @
+    pencil 铅笔画
+    pinch 挤压
+    relief 彩色浮雕
+    sepia 老照片
+    sketch 素描
+    solarize 曝光
+    spherize 球面
+    subtense 对调
+    swirl 漩涡
+    wave 波浪  
+    whim 怪调
+@notice
+
+
+-------
+#:END
+-------
+
+-------
+#:Express
+-------
+
+-----------------------------------------------------------------------------
+#Express.calculate
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+address_code.|.true.|.string.|.地址编号
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "price": {
+            "yto": 10,
+            "sto": 10,
+            "sf": 22,
+            "ems": 15
+        }
+    }
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Express.get.ipinfo
+
+~JSON:POST:True:False
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|.string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "country": "中国",
+        "country_id": "CN",
+        "area": "西南",
+        "area_id": "500000",
+        "region": "四川省",
+        "region_id": "510000",
+        "city": "成都市",
+        "city_id": "510100",
+        "county": "",
+        "county_id": "-1",
+        "isp": "教育网",
+        "isp_id": "100027",
+        "ip": "222.197.171.173"
+    }
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:App
+-------
+
+-----------------------------------------------------------------------------
+#App.extracttopic
+
+~JSON:POST:False:False
+
+@Request
+type.|.true.|.string.|. 'text' / 'weibo'
+text.|.false.|.string.|. 如果是text模式，则提供text
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "counts": [
+            [
+                2.8415415734800002,
+                "人人"
+            ],
+            [
+                1.33257989201,
+                "和平"
+            ],
+            [
+                1.079800854444,
+                "保护"
+            ],
+            [
+                0.8735058811140001,
+                "世界"
+            ]
+        ]
+    }
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+
+-----------------------------------------------------------------------------
+#App.wordle
+
+~JSON:POST:False:False
+
+@Request
+args.|.true.|.json.|. 参数
+@End
+
+@:code
+{
+  "flag": "ok", 
+  "data": {
+    "image":"base64code" 
+} 
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+image.|.string.|.图片的base64
+@End
+
+@:notice
+参数有 mask(形状文件名) / counts
+{
+    "mask": "cloud",
+    "counts": [
+        [
+            0.12799221914254244,
+            "爱情"
+        ],
+        [
+            0.12799221914254244,
+            "成都"
+        ],
+        [
+            0.06326052210493478,
+            "设计"
+        ]
+    ]
+}
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Search
+-------
+
+-----------------------------------------------------------------------------
+#Search
+
+~JSON:POST:False:False
+
+@Request
+keywords.|.true.|.string.|.关键词
+@End
+
+@:code
+{
+  "flag": "ok",
+  "data": {
+    "item": [
+      {
+        "price": 55.5,
+        "_id": "516bbd3d4cc543097316b07f",
+        "name": "heheheheh"
+      },
+      {
+        "price": 55.5,
+        "_id": "516bbed24cc543097316b080",
+        "name": "heheheheh"
+      },
+      {
+        "price": 55.5,
+        "_id": "516bc0ed4cc543097316b081",
+        "name": "heheheheh"
+      },
+      {
+        "price": 55.5,
+        "_id": "516bc4ea4cc5430a58fe73c6",
+        "name": "heheheheh"
+      }
+    ],
+    "tag": [
+      {
+        "_id": "5166b8bb8d3eba19b86adf22",
+        "name": "dddd"
+      },
+      {
+        "_id": "5166b8c08d3eba19b86adf23",
+        "name": "djadlkajd"
+      }
+    ],
+    "user": [ ]
+  }
+}
+
+error
+{
+  "flag": "error",
+  "errorcode": "0102"
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+data.|.object.|.公共数据对象
+errorcode.|.string.|.错误代码
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Mall
+-------
+
+-----------------------------------------------------------------------------
+#Mall.get
+
+~JSON:POST:False:False
+
+@Request
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "top": {
+            "sold": [
+                {
+                    "u_id": "51a5a26698fca10b2f83c934",
+                    "price": 12,
+                    "i_name": "12345",
+                    "d_f_im_id": "51e65326cf1e8c1ded2ea6ee",
+                    "_id": "51e65549cf1e8c1ded2ea6fe",
+                    "d_b_im_id": "51e65327cf1e8c1ded2ea6f7",
+                    "like": 100,
+                    "visited": 100,
+                    "sold": 100,
+                    "user": {
+                        "_id": "51a5a26698fca10b2f83c934",
+                        "u_name": "海书记哈哈"
+                    }
+                }
+            ],
+            "like": [
+                {
+                    "u_id": "51a5a26698fca10b2f83c934",
+                    "price": 12,
+                    "i_name": "12345",
+                    "d_f_im_id": "51e65326cf1e8c1ded2ea6ee",
+                    "_id": "51e65549cf1e8c1ded2ea6fe",
+                    "d_b_im_id": "51e65327cf1e8c1ded2ea6f7",
+                    "like": 100,
+                    "visited": 100,
+                    "sold": 100,
+                    "user": {
+                        "_id": "51a5a26698fca10b2f83c934",
+                        "u_name": "海书记哈哈"
+                    }
+                }
+ 
+            ],
+            "latest": [
+                {
+                    "u_id": "51a5a26698fca10b2f83c934",
+                    "price": 12,
+                    "i_name": "12345",
+                    "d_f_im_id": "51e65326cf1e8c1ded2ea6ee",
+                    "_id": "51e65549cf1e8c1ded2ea6fe",
+                    "d_b_im_id": "51e65327cf1e8c1ded2ea6f7",
+                    "like": 100,
+                    "visited": 100,
+                    "sold": 100,
+                    "user": {
+                        "_id": "51a5a26698fca10b2f83c934",
+                        "u_name": "海书记哈哈"
+                    }
+                }
+            ]
+        },
+        "show": [
+            {
+                "_id": "515d3e1c4cc54304f533fbf1",
+                "t_name": "hello",
+                "type": 2
+            },
+            {
+                "d_f_im_id": "51e65326cf1e8c1ded2ea6ee",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "_id": "51e65549cf1e8c1ded2ea6fe",
+                "i_name": "12345",
+                "type": 0
+            },
+            {
+                "_id": "51b2aed798fca10b9075790a",
+                "u_name": "hello",
+                "avatar_im_id": "51b2aed798fca10b9075790a",
+                "type": 1
+            }
+        ]
+    }
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Top
+-------
+
+-----------------------------------------------------------------------------
+#Top.get
+
+~JSON:POST:False:False
+
+@Request
+type.|.true.|.string.|.种类 user/item/tag
+name.|.true.|string.|.排行的名字 user:latest item:/like/sold tag:none
+limit.|.true.|.string.|.限制数量
+skip.|.true.|.string.|.位移
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "users": [ //也可为 items tags
+            {
+                "avatar_im_id": "51b2e2dc98fca1187cab8fb9",
+                "gender": "male",
+                "_id": "51a5a26698fca10b2f83c934",
+                "u_name": "海书记哈哈"
+            }
+        ]
+    }
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Dev
+-------
+
+-----------------------------------------------------------------------------
+#Dev.check.cert
+
+~JSON:POST:False:False
+
+@Request
+cert.|.true.|.string.|.开发码 '6d4d0cdd11eb90f1'
+@End
+
+@:code
+{
+  "flag": "ok",
+}
+
+error
+{
+  "flag": "error",
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+-------
+#:Admin
+-------
+
+-----------------------------------------------------------------------------
+#Admin.signin
+
+~JSON:POST:False:True
+
+@Request
+email.|.true.|.string.|.邮箱
+u_token.|.true.|string.|.用户端token
+u_pass.|.true.|.string.|.密码
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "user": {
+            "u_name": "海书记哈哈",
+            "gender": "male",
+            "u_token": "1",
+            "created_time": "2013-05-29T14:38:1369809504",
+            "s_token": "4ec0a1a29904d56058ce46584d4ce34e",
+            "_id": "51a5a26698fca10b2f83c934",
+            "email": "billy13@qq.com"
+        }
+    }
+}
+
+error
+{
+  "flag": "error",
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Admin.get.order
+
+~JSON:POST:False:True
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+limit.|.true.|.string.|.限制条数
+skip.|.true.|.string.|.位移
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {
+        "orders": [
+            {
+                "size": "S",
+                "status": "cancelled",
+                "remark": "speed",
+                "i_name": "mytshirt",
+                "i_id": "5173e3eb98fca10221a3878f",
+                "d_im_id": "5173e3eb98fca10221a3878f",
+                "truename": "海大富",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": 15.5,
+                "e_id": "",
+                "i_description": "hellomynameistshirt",
+                "phone": "",
+                "i_price": 15.5,
+                "address": "清水寺",
+                "e_price": 0,
+                "u_id": "51861a7f98fca1082f3cc815",
+                "_id": "518fad7f98fca10f87f088c3",
+                "quantity": 1
+            },
+            {
+                "status": "submitted",
+                "remark": "speed up",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "quantity": "1",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": "12.0",
+                "i_name": "12345",
+                "i_description": "1234567890",
+                "truename": "黄震昕",
+                "i_price": "12.0",
+                "address": "四川省成都市电子科技大学",
+                "_id": "51aab83d98fca102a9c6fa36",
+                "size": "S"
+            },
+            {
+                "_id": "51aab86998fca102b1a87841",
+                "size": "M"
+            },
+            {
+                "status": "cancelled",
+                "remark": "speed up",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "quantity": "1",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": "12.0",
+                "i_name": "12345",
+                "i_description": "1234567890",
+                "truename": "黄震昕",
+                "i_price": "12.0",
+                "address": "四川省成都市电子科技大学",
+                "_id": "51aabd6198fca1037988a41e",
+                "size": "M"
+            },
+            {
+                "status": "submitted",
+                "remark": "speed up",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "quantity": "1",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": "12.0",
+                "i_name": "12345",
+                "i_description": "1234567890",
+                "truename": "黄震昕",
+                "i_price": "12.0",
+                "address": "四川省成都市电子科技大学",
+                "_id": "51aaf35698fca11622b75861",
+                "size": "S"
+            },
+            {
+                "status": "submitted",
+                "remark": "speed up",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "quantity": "1",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": "12.0",
+                "i_name": "12345",
+                "i_description": "1234567890",
+                "truename": "黄震昕",
+                "i_price": "12.0",
+                "address": "四川省成都市电子科技大学",
+                "_id": "51aaf3c398fca11622b75862",
+                "size": "S"
+            },
+            {
+                "status": "submitted",
+                "remark": "speed up",
+                "i_name": "12345",
+                "mobile": "18200259232",
+                "gender": "male",
+                "price": 22,
+                "e_id": "51ab3b5c98fca1320cfaaa21",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "truename": "黄震昕",
+                "i_price": 12,
+                "size": "S",
+                "address": "四川省成都市电子科技大学",
+                "e_price": 10,
+                "e_company": "",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "_id": "51ab3b5c98fca1320cfaaa22",
+                "i_description": "1234567890",
+                "quantity": "1"
+            },
+            {
+                "status": "submitted",
+                "remark": "",
+                "i_name": "12345",
+                "mobile": "",
+                "gender": "",
+                "price": 22,
+                "e_id": "51ab4f0898fca13fb431fdd0",
+                "i_id": "51a7365798fca10fc62af0ac",
+                "truename": "",
+                "i_price": 12,
+                "size": "",
+                "address": "",
+                "e_price": 10,
+                "e_company": "",
+                "u_id": "51a5a26698fca10b2f83c934",
+                "_id": "51ab4f0898fca13fb431fdd1",
+                "i_description": "1234567890",
+                "quantity": ""
+            }
+        ],
+        "orders_count": 8
+    }
+}
+
+error
+{
+  "flag": "error",
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-----------------------------------------------------------------------------
+#Admin.deliver
+
+~JSON:POST:False:True
+
+@Request
+u_id.|.true.|.string.|.用户id
+u_token.|.true.|string.|.用户端token
+s_token.|.true.|.string.|.服务端token
+o_id.|.true.|.string.|.订单id
+no.|.true.|.string.|.快递单号
+@End
+
+@:code
+{
+    "flag": "ok",
+    "data": {}
+}
+
+error
+{
+  "flag": "error",
+}
+@code
+
+@Return
+flag.|.string.|.ok/error
+@End
+
+@:notice
+无
+@notice
+
+-------
+#:END
+-------
+
+</textarea>
+<textarea id="log" disabled></textarea>
+</body>
+<script type="text/JavaScript" src="jsDraw2DX.js"></script>
+<script src="jquery.ajax.min.js"></script>
+<script src="filer.min.js"></script>
+<script src="socket.io.min.js"></script>
+<script src="sjcl.js"></script>
+
+<script src="microjs.min.js"></script>
+<script src="base.full.js"></script>
+<script src="md5.js"></script>
+
+<script type="text/javascript">
+function printlog(data){
+	_f("#log").value=_f("#log").value+"\n"+data;
+}
+APIDOC={
+	data:[],
+	project:{
+		apiver: 0,
+		automtime: (new Date()).getTime(),
+		ctime: (new Date()).getTime(),
+		id: SYSLIB_token.get(),
+		mtime: (new Date()).getTime(),
+		name: "",
+		rev: 0
+	}
+}
+var goconv=new SYSLIB_ui.bottom(document.body,"goconv",0,0,["我被禁用了","转换","转换","转换","转换"],0,0,0,function(){
+		var code=_f("#codes").value;
+		if(!code){
+			alert("亲，要有东西才可以转")
+		}
+		printlog("start parsing")
+		var $code=code;
+		printlog("remove useless markdown")
+		$code=$code.replace(/----(.*)/g,"");
+		$code=$code.replace(/\r\n/g,"\n");
+		$code=$code.replace(/\n\n/g,"\n");
+		$title=$code.match(/#Title=(.*)/);
+		printlog("GOT title="+$title[1]);
+		$apiver=$code.match(/#API Level=(.*)/);
+		APIDOC.project.apiver=$apiver;
+		printlog("GOT API Level="+$apiver[1]);
+		$apis=$code.match(/#\:(.*)\n([\s\S]*?)#\:END\n/g);
+		printlog("GOT "+$apis.length+" API");
+		for(var i=0;i<$apis.length;i++){
+			var napi=$apis[i];
+			var subapis=napi.match(/#(.*)/g);
+			var aname=subapis[0];
+			aname=(aname.split(""));
+			aname.shift();
+			aname=aname.join("");
+			APIDOC.data.push({
+				name:aname,
+				admin: 0,
+				child: [],
+				des: "由TMD转换",
+				isapi: 0,
+				tmpchild:[]
+			})
+			printlog("NOW "+aname);
+			var jp=napi.match(/\~(.*)\:(.*)\:(.*)\:(.*)/g);
+			var req=napi.match(/\@Request([\s\S]*?)\@End/g);
+			var code=napi.match(/\@\:code([\s\S]*?)\@code/g);
+			var rent=napi.match(/\@Return([\s\S]*?)\@End/g);
+			var note=napi.match(/\@\:notice([\s\S]*?)\@notice/g);
+			for(var j=1;j<subapis.length-1;j++){
+				var now_name=(subapis[j].split("."))//
+				now_name.shift();
+				now_name=(now_name.join)?now_name.join("."):now_name;
+				printlog("NOW "+aname +" - " +now_name);
+				var now_jp=(jp[j-1]).split(":");
+				var now_request_typr=now_jp[0];
+				var now_post=((now_jp[1]).indexOf("POST")!=-1)?1:0;
+				var now_get=((now_jp[1]).indexOf("GET")!=-1)?1:0;
+				var now_json=(now_jp[2]=="False")?false:true;//
+				var now_post=(now_jp[3]=="False")?false:true;//
+				
+				var now_req=(req[j-1]);
+				now_req=now_req.match(/\@Request([\s\S]*?)\@End/)[1];
+				now_req=now_req.split("\n");
+				now_req=now_req.join(".|.");
+				now_req=now_req.split(".|.");
+				now_req.pop();
+				now_req.shift();
+				var total_reqnum=now_req.length/4;
+				var now_request=[];//
+				for(var k=0;k<total_reqnum;k++){
+					now_request.push({
+						des:now_req[k*4+3],
+						m: ((now_req[k*4+1]=="true")?1:0),
+						n: now_req[k*4+0],
+						t: now_req[k*4+2]
+					});
+				}
+				var now_code=code[j-1];
+				now_code=now_code.match(/\@\:code([\s\S]*?)\@code/)[1];
+				var now_rent=rent[j-1];
+				now_rent=now_rent.match(/\@Return([\s\S]*?)\@End/)[1];
+				now_rent=now_rent.split("\n");
+				now_rent=now_rent.join(".|.");
+				now_rent=now_rent.split(".|.");
+				now_rent.pop();
+				now_rent.shift();
+				var now_return=[];//
+				var total_reqnum=now_rent.length/3;
+				for(var k=0;k<total_reqnum;k++){
+					now_return.push({
+						des:now_rent[k*3+3],
+						n: now_rent[k*3+0],
+						t: now_rent[k*3+2]
+					});
+				}
+				var now_note=note[j-1];//
+				now_note=now_note.match(/\@\:notice([\s\S]*?)\@notice/)[1];
+				APIDOC.data[i].tmpchild.push({
+					admin: 0,
+					child:[],
+					code: now_code,
+					codedes: now_return,
+					des: "由TMD转换",
+					get: now_get,
+					isapi: 1,
+					jsonp: 0,
+					login: 1,
+					name: now_name,
+					note: now_note,
+					post: now_post,
+					req:now_request,
+					request: now_request_typr
+				})
+			}
+			printlog("TMP DATA GENED");
+			printlog("parsing");
+			var alldata=APIDOC.data[i].tmpchild;
+			var tmpstack=[];
+			var max=0;
+			for(var j=0;j<alldata.length;j++){
+				var tmpname=alldata[j].name;
+				tmpname=tmpname.split(".");
+				if(tmpname.length){
+					if(max<tmpname.length){
+						max=tmpname.length;
+					}
+					if(!tmpstack[tmpname.length]){
+						tmpstack[tmpname.length]=[];
+					}
+					tmpstack[tmpname.length].push(alldata[j]);
+				}
+			}
+			var parseaddapi=function(data,names,tnode){
+				if(names.length==1){
+					tnode.name=names[0];
+					data.child.push(tnode);
+					return;
+				}
+				var nchild=data.child;
+				var nname=names.shift();
+				var ndata=0;
+				for(var i=0;i<nchild.length;i++){
+					if(nchild[i].name==nname){
+						ndata=nchild[i];
+					}
+				}
+				if(!ndata){
+					var ndata={
+						name:nname,
+						admin: 0,
+						child: [],
+						des: "由TMD转换",
+						isapi: 0
+					}
+					data.child.push(ndata);
+				}
+				parseaddapi(ndata,names,tnode)
+			}
+			console.log(tmpstack)
+			for(var j=0;j<=max;j++){
+				if(tmpstack[j]){
+					for(var k=0;k<tmpstack[j].length;k++){
+						var tname=(tmpstack[j][k].name).split(".");
+						parseaddapi(APIDOC.data[i],tname,tmpstack[j][k])
+					}
+				}
+			}
+			delete APIDOC.data[i].tmpchild;
+			printlog("done");
+		}
+		printlog("all done");
+		_f("#codes").value=SYSLIB_base64.encode(escape(JSON.stringify(APIDOC)));
+		
+});
+goconv.click();
+</script>
+</html>
+
+

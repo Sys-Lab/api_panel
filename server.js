@@ -283,10 +283,13 @@ function gettoken(length){
 	}
 	return $utk;
 }
+var spawn = require( 'child_process' ).spawn;
 var MongoClient = require('mongodb').MongoClient
     , format = require('util').format;
 	var apidb=0;  
+	
 	/////
+	
 MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
     if(err) throw err;
 
@@ -374,6 +377,19 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 			  }else{
 				  fs.renameSync('tmp/'+uploading_stack[e.token].tmpfile, "files/"+uploading_stack[e.token].filename);
 				  uploading_stack[e.token].tfd.end();
+			  }
+			  if(e.convert){
+				  if(e.convert==1){
+					  var packer = spawn( 'wkhtmltopdf', [ "files/"+uploading_stack[e.token].filename ,"files/"+uploading_stack[e.token].filename+".tmp.pdf"] );
+					  packer.on( 'exit', function () {
+							
+							 var data=fs.readFileSync("files/"+uploading_stack[e.token].filename+".tmp.pdf");
+							 fs.writeFileSync("files/"+uploading_stack[e.token].filename+".pdf", (new Buffer(data)).toString('base64'),{encoding:"binary"})
+							 uploading_stack[e.token]=0;
+							 $socket.emit('saved', { "statue": "ok" });
+					  });
+				  }
+				  return;
 			  }
 			  uploading_stack[e.token]=0;
 		  	  $socket.emit('saved', { "statue": "ok" });

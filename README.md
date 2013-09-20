@@ -40,12 +40,21 @@ Todos:
 Change Log:
 =============================
 v2013092001
+
     - Add Search . You can now use left corner search bar;
+    
     - Add Sync/Export Process tips.
+    
 v2013091501
+
     - Add Export . You can Export Document to SYSAPI.bin/JSON/HTML(For print)/PDF(Need Nodejs).
+    
     !! Export to PDF use WKhtml it has Win/Linux/Mac version;
+    
     !! Thabks a lot to WKhtml's developer;
+    
     - Fix some Bug
+    
 first push
+
     - Just Basic codes

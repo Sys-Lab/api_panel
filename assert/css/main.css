@@ -202,7 +202,7 @@ outline:none;
 .syslab_api_plbg_des_edit_btn2,.syslab_api_landing_sm,.syslab_api_landing_ico,.syslab_api_landing_ynico,.syslab_api_landing_go,
 .syslab_api_landing_choosepj_add,.syslab_api_landing_choosepj_list span,.syslab_api_loading,.syslab_api_landing_cloud_ls_btn span,
 .syslab_api_landing_cloud_ls_title span,.syslab_api_landing_choosepj_title span,#syslab_api_plbg_des_des span,
-#syslab_api_notice span,.syslab_api_msgbox_info_1_ico{
+#syslab_api_notice span,.syslab_api_msgbox_info_1_ico,#syslab_api_plbg_apis_search span{
 	font-family: 'SYSLAB_icon_Fonts';
 }
 .syslab_api_plbg_des_edit_btn,.syslab_api_plbg_des_edit_btn2{
@@ -286,6 +286,7 @@ position: relative;
 	color:#eee;
 	overflow:hidden;
 	overflow-y:scroll;
+	margin-right:20px;
 }
 
 #syslab_api_plbg_des{
@@ -443,6 +444,10 @@ margin: 0 25px 0 25px;
 #syslab_api_plbg_apis_search{
 	display:none;
 	background-color:#444;
+	
+}
+#syslab_api_plbg_apis_search div{
+	cursor:pointer;
 }
 #syslab_api_plbg_search{
 	position: absolute;
@@ -867,4 +872,23 @@ text-align: center;
 	bottom:5px;
 	left:5px;
 	cursor:pointer;
+}
+#notice_pbar{
+height:4px;
+background:#aaa;
+}
+.syslab_api_apinode_name_name,#syslab_api_plbg_apis_search div{
+opacity: 0.5;
+}
+.syslab_api_apinode_name_name:hover,#syslab_api_plbg_apis_search div:hover,.LAST_CLICKED_API{
+opacity: 1;
+}
+#syslab_api_plbg_apis_search center{
+	margin-top: 100%;
+color: rgba(255,255,255,0.5);
+}
+#syslab_api_plbg_apis_search span{
+	font-size: 100px;
+}
+#syslab_api_plbg_apis_search div{
 }

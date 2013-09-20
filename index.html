@@ -15,8 +15,8 @@
     	<div id="syslab_api_toolbox_to_unfold">&#xe0a3;</div>
         <div id="syslab_api_toolbox_to_add">&#x7b;</div>
   </div>
-  <div id="syslab_api_plbg_apis" style="width:300px;"></div>
-  <div id="syslab_api_plbg_apis_search" style="width:300px;"></div>
+  <div id="syslab_api_plbg_apis" style="width:260px;"></div>
+  <div id="syslab_api_plbg_apis_search" style="width:260px;"></div>
   <div id="syslab_api_plbg_fold">&#x3e;</div>
   <input id="syslab_api_plbg_search" type="text" placeholder="输入API搜索">
 </div>
@@ -181,7 +181,7 @@
     	<div class='syslab_api_loading_logo'>API Panel</div>
     	<div class='syslab_api_loading_main syslab_api_loading'>&#xe09a;</div>
         <div class='syslab_api_loading_tech'><span onClick="window.open('http://nodejs.org/');">NodeJs</span> <span onClick="window.open('http://www.mongodb.org/');">MongoDb</span> <span onClick="window.open('http://socket.io/');">Socket.IO</span> <span>HTML5</span></div>
-        <div class='syslab_api_loading_build' onClick="window.open('https://github.com/Sys-Lab/api_panel');">Open source on Github .&nbsp;&nbsp;&nbsp;v 2013091501</div>
+        <div class='syslab_api_loading_build' onClick="window.open('https://github.com/Sys-Lab/api_panel');">Open source on Github .&nbsp;&nbsp;&nbsp;v 2013092001</div>
     </div>
 </div>
 <div id="syslab_api_notice"></div>
@@ -383,8 +383,19 @@ function sys_api_msgbox(data,title,type,listeners){
 		grandmom.style.marginLeft="0px";
 	},100)
 }
+NOW_SYNC_PTYPE=0;
+function ppercent(pc){
+	if(NOW_SYNC_PTYPE==1){
+		NOW_SYNC_PNODE.style.width=pc+"%";
+	}else{
+		NOW_SYNC_PNODE.innerHTML=pc+"%";
+	}
+}
+NOW_SYNC_PNODE=0;
+
 function sys_api_notice(data,type,time,needobj){
 	var newnode=document.createElement('li');
+	var pbar='';
 	switch(type){// 0 info 1 ok 2 error  3 loading 4 syncing
 		case 0:
 			var typeclass='';
@@ -401,13 +412,14 @@ function sys_api_notice(data,type,time,needobj){
 		case 3:
 			var typeclass='class="syslab_api_loading"';
 			var typeicon='&#xe09a;';
+			pbar='<div id="notice_pbar"></div>';
 			break;
 		case 4:
 			var typeclass='class="syslab_api_loading"';
 			var typeicon='&#xe07b;';
 			break;
 	}
-	newnode.innerHTML='<span '+typeclass+'>'+typeicon+'</span><b>'+data+'</b>';
+	newnode.innerHTML='<span '+typeclass+'>'+typeicon+'</span><b>'+data+'</b>'+pbar;
 	newnode.style.height="0px";
 	newnode.style.opacity=0;
 	newnode.removethis=function(){
@@ -761,8 +773,10 @@ _f("#syslab_api_landing_cloud_go").addEventListener("click",function(){
 		_f("#syslab_api_landing_cloud_ls_ips").style.opacity=0;
 		_f("#syslab_api_landing_cloud_ls_login_go").style.opacity=0;
 		_f("#syslab_api_landing_cloud_ls_signup_go").style.opacity=0;
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>自动登录成功,正在同步数据";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>自动登录成功,正在同步数据 <b id='notice_ptext'></b>";
 		setTimeout(function(){
+			NOW_SYNC_PNODE=_f("#notice_ptext");
+			NOW_SYNC_PTYPE=2;
 			sync_datas(function(){
 				_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x33;</span>同步成功";
 				setTimeout(show_pjboard,2000);
@@ -839,8 +853,10 @@ socket.on('login', function (data) {
 		NOW_USER_SIGNED=1;
 		saveuser();
 		_f("#syslab_api_landing_cloud_ls_notice").style.color="#0f0";
-		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>登录成功,正在同步数据";
+		_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span class='syslab_api_loading'>&#xe07b;</span>登录成功,正在同步数据 <b id='notice_ptext'></b>";
 		setTimeout(function(){
+			NOW_SYNC_PNODE=_f("#notice_ptext");
+			NOW_SYNC_PTYPE=2;
 			sync_datas(function(){
 				_f("#syslab_api_landing_cloud_ls_notice").innerHTML="<span>&#x33;</span>同步成功";
 				setTimeout(show_pjboard,2000);
@@ -1412,6 +1428,8 @@ _f("#syslab_api_toolbox_to_export").addEventListener("click",function(){
 			});
 		},function(){
 			SYS_API_TMP_EXPORT=sys_api_notice("正在导出",3,0,1);
+			NOW_SYNC_PNODE=_f("#notice_pbar");
+			NOW_SYNC_PTYPE=1;
 			var document=genprintpage();
 			start_uploadlist(document,"SYSAPI.html",function(){
 				start_downloadlist("SYSAPI.html.pdf",function(datas2){
@@ -1548,8 +1566,9 @@ _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
 				APIDOC.data.push(cdata);
 			}
 			LAST_CLICKED_API=0;
-			parse_APIDOC(APIDOC);
 			LAST_ADDED_API=cdata;
+			parse_APIDOC(APIDOC);
+			
 			needsave()
 		},function(){
 			var cdata={
@@ -1566,8 +1585,9 @@ _f("#syslab_api_toolbox_to_add").addEventListener("click",function(){
 				APIDOC.data.push(cdata);
 			}
 			LAST_CLICKED_API=0;
-			parse_APIDOC(APIDOC);
 			LAST_ADDED_API=cdata;
+			parse_APIDOC(APIDOC);
+			
 			needsave()
 		}
 	])
@@ -1593,7 +1613,7 @@ function check_apipanel_width(){
 	if(_f("#syslab_api_plbg_apis").scrollWidth>300){
 		LAST_API_P_WIDTH=_f("#syslab_api_plbg_apis").scrollWidth;
 	}else{
-		LAST_API_P_WIDTH=300;
+		LAST_API_P_WIDTH=260;
 	}
 	_f("#syslab_api_plbg").style.width=LAST_API_P_WIDTH+"px";
 	_f("#syslab_api_plbg_apis").style.width=LAST_API_P_WIDTH+"px";
@@ -2684,15 +2704,57 @@ function parse_APIDOC(data){
 	}
 	
 }
+ALLLIST=0;
 function dynsearch(){
 	var words=_f("#syslab_api_plbg_search").value;
-	if(!words||words.indexOf(".")==-1){
+	_f("#syslab_api_plbg_apis_search").innerHTML="";
+	SYSLIB_dom.freshdomcache();
+	if(!words){
 		_f("#syslab_api_plbg_apis_search").style.display="none";
+		ALLLIST=0;
 		return;
 	}
+	
 	_f("#syslab_api_plbg_apis_search").style.display="block";
-	
-	
+	var getalllist=function(data,wname){
+		if(!data||!data.length){
+			return;
+		}
+		for(var i=0;i<data.length;i++){
+			var oname=(wname)?(wname+"."+data[i].name):data[i].name;
+			ALLLIST.push({
+				name:oname,
+				refer:data[i]
+			});
+			getalllist(data[i].child,oname)
+		}
+	}
+	if(!ALLLIST){
+		ALLLIST=[];
+		getalllist(APIDOC.data,'');
+	}
+	var choosethis=function(){
+		LAST_ADDED_API=this.referdata.refer;
+		LAST_ADDED_API['addnew']=1;
+		parse_APIDOC(APIDOC);
+		_f("#syslab_api_plbg_apis_search").style.display="none";
+		_f("#syslab_api_plbg_search").value="";
+		ALLLIST=0;
+	}
+	var key=0;
+	for(var i=0;i<ALLLIST.length;i++){
+		if((ALLLIST[i].name).indexOf(words)!=-1){
+			key=1;
+			var newnode=document.createElement('div');
+			newnode.referdata=ALLLIST[i];
+			newnode.innerHTML=ALLLIST[i].name;
+			_f("#syslab_api_plbg_apis_search").appendChild(newnode);
+			newnode.addEventListener("click",choosethis,false);
+		}
+	}
+	if(!key){
+		_f("#syslab_api_plbg_apis_search").innerHTML="<center><span>&#xe010;</span><div>Ops~没有找到结果哦!</div></center>"
+	}
 }
 _f("#syslab_api_plbg_search").addEventListener("keyup",dynsearch,false);
 NEED_SAVE=0;
@@ -2836,6 +2898,8 @@ function save_manual(){
 	if(NOW_USER_SIGNED&&NOW_USER_CLOUD){
 		setTimeout(function(){
 		var syncnotice=sys_api_notice("正在同步",3,0,1);
+		NOW_SYNC_PNODE=_f("#notice_pbar");
+		NOW_SYNC_PTYPE=1;
 		sync_datas(function(){
 			sys_api_notice("同步完成",1,0,1);
 			setTimeout(function(){
@@ -2876,7 +2940,7 @@ now_download={
 		name:0,
 		cb:0
 }
-var chunksize=1024;
+var chunksize=4096;
 var next_uploadok=0;
 function start_uploadlist(data,name,cb,convert){
 	now_upload.chunk=0;
@@ -2912,13 +2976,15 @@ socket.on('getfile', function (data) {
 		return;
 	}
 	now_download.totalcunk=data.num;
-	now_download.chunk++
+	now_download.chunk++;
+	ppercent(parseInt((now_download.chunk/now_download.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
 	socket.emit('getdata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,num:now_download.chunk});
 });
 socket.on('getdata', function (data) {
 	now_download.datas+=data.data;
 	now_download.chunk++;
 	now_download.percent=(now_download.chunk/now_download.totalcunk);
+	ppercent(parseInt((now_download.chunk/now_download.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
 	if(now_download.chunk>now_download.totalcunk){
 		socket.emit('getok', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token});
 		now_download.cb(now_download.datas);
@@ -2930,6 +2996,7 @@ socket.on('getdata', function (data) {
 function senddata(data){
 	now_upload.chunk++;
 	now_upload.percent=(now_upload.chunk/now_upload.totalcunk);
+	ppercent(parseInt((now_upload.chunk/now_upload.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
 	if(now_upload.chunk==now_upload.totalcunk){
 		next_uploadok=1;
 	}
@@ -2943,6 +3010,7 @@ function senddata(data){
 socket.on('senddata', function (data) {
 	if(data.statue=="err"){
 		now_upload.chunk--;
+		ppercent(parseInt((now_upload.chunk/now_upload.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
 	}
 	if(next_uploadok){
 		socket.emit('sendover', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_upload.token,fallback:'noslice',convert:now_upload.convert});

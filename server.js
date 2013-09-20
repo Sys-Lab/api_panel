@@ -297,7 +297,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 	USER=apidb.collection('user');
   })
   var $socket=0;
-  var CHUNKSIZE=1024;
+  var CHUNKSIZE=4096;
  var uploading_stack={};
  var downloading_stack={};
   //server

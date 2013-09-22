@@ -416,10 +416,14 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 						var datastack=[];
 						var start=0;
 						var stop=parseInt(start+CHUNKSIZE-1);
-						for(var i=0;(stop+1)<file.length;i++){
-							start=i*CHUNKSIZE;
-							stop=parseInt(start+CHUNKSIZE-1);
-							datastack.push(file.slice(start,stop+1));
+						if(file.length<=CHUNKSIZE){
+							datastack.push(file);
+						}else{
+							for(var i=0;(stop+1)<file.length;i++){
+								start=i*CHUNKSIZE;
+								stop=parseInt(start+CHUNKSIZE-1);
+								datastack.push(file.slice(start,stop+1));
+							}
 						}
 						downloading_stack[e.token]={
 							filename:e.file,

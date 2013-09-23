@@ -1,0 +1,34 @@
+{
+  "name": "apipanel",
+  "description": "pro web API documentation",
+  "keywords": [
+    "api",
+    "documentation",
+    "html5",
+    "web"
+  ],
+  "version": "0.1.0-1",
+  "author": "SysLab.Scientihark <mgbbs.mobile@gmail.com>",
+  "maintainers": [
+    "Scientihark <mgbbs.mobile@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sys-Lab/api_panel.git"
+  },
+  "preferGlobal": false,
+  "dependencies": {
+    "socket.io": "0.9.16",
+    "mongodb": "1.3.19"
+  },
+  "devDependencies": {},
+  "main": "server.js",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "license": "GPL",
+  "subdomain": "apipanel",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

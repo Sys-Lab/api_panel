@@ -1936,13 +1936,13 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_detialdes").innerHTML="";
 		_f("#syslab_api_plbg_des_inputvar").innerHTML="";
 		_f("#syslab_api_plbg_codedes").innerHTML="";
-		var $this=this;
+		//var $this=this;
 		
 		var tmpa=document.createElement('span');
-		var lastw=$this.lastw;
+		var lastw=LAST_CLICKED_API.lastw;
 		lastw=(lastw=="")?lastw:(lastw+".");
-		tmpa.innerHTML=lastw+$this.apidata.name;
-		$this.fullw=lastw+$this.apidata.name;
+		tmpa.innerHTML=lastw+LAST_CLICKED_API.apidata.name;
+		LAST_CLICKED_API.fullw=lastw+LAST_CLICKED_API.apidata.name;
 		_f("#syslab_api_plbg_des_name").appendChild(tmpa);
 		tmpa=document.createElement('span');
 		tmpa.innerHTML="&#xe078;";
@@ -1950,27 +1950,27 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_name").appendChild(tmpa);
 		tmpa.addEventListener("click",function(){
 			if(this.savedata){
-				$this.apidata.name=this.savedata.value;
+				LAST_CLICKED_API.apidata.name=this.savedata.value;
 				
-				if($this.lastw&&$this.lastw!=""){
-					this.previousSibling.innerHTML=$this.lastw+"."+$this.apidata.name;
+				if(LAST_CLICKED_API.lastw&&LAST_CLICKED_API.lastw!=""){
+					this.previousSibling.innerHTML=LAST_CLICKED_API.lastw+"."+LAST_CLICKED_API.apidata.name;
 				}else{
-					this.previousSibling.innerHTML=$this.apidata.name;
+					this.previousSibling.innerHTML=LAST_CLICKED_API.apidata.name;
 				}
 				freash_api_names();
 				this.savedata=0;
 				needsave()
 			}else{
-				this.previousSibling.innerHTML="<span>"+$this.lastw+"</span> . ";
+				this.previousSibling.innerHTML="<span>"+LAST_CLICKED_API.lastw+"</span> . ";
 				var tmpipt=document.createElement('input');
-				tmpipt.value=$this.apidata.name;
+				tmpipt.value=LAST_CLICKED_API.apidata.name;
 				this.previousSibling.appendChild(tmpipt);
 				this.savedata=tmpipt;
 			}
 		},false);
 		
 		tmpa=document.createElement('span');
-		tmpa.innerHTML=$this.apidata.des;
+		tmpa.innerHTML=LAST_CLICKED_API.apidata.des;
 		_f("#syslab_api_plbg_des_detialdes").appendChild(tmpa);
 		tmpa=document.createElement('span');
 		tmpa.innerHTML="&#xe078;";
@@ -1978,14 +1978,14 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_detialdes").appendChild(tmpa);
 		tmpa.addEventListener("click",function(){
 			if(this.savedata){
-				$this.apidata.des=this.savedata.value;
-				this.previousSibling.innerHTML=$this.apidata.des;
+				LAST_CLICKED_API.apidata.des=this.savedata.value;
+				this.previousSibling.innerHTML=LAST_CLICKED_API.apidata.des;
 				this.savedata=0;
 				needsave();
 			}else{
 				this.previousSibling.innerHTML="";
 				var tmpipt=document.createElement('input');
-				tmpipt.value=$this.apidata.des;
+				tmpipt.value=LAST_CLICKED_API.apidata.des;
 				this.previousSibling.appendChild(tmpipt);
 				this.savedata=tmpipt;
 			}
@@ -1995,81 +1995,81 @@ function parse_APIDOC_do(data,node,lastw){
 		}
 		SYSLIB_dom.freshdomcache();
 		_f("#syslab_api_plbg_des_apivar").className="syslab_api_plbg_des_show";
-		if($this.apidata.login){
+		if(LAST_CLICKED_API.apidata.login){
 			_f("#syslab_api_plbg_des_statue_login").previousSibling.innerHTML="&#x56;";
 		}else{
 			_f("#syslab_api_plbg_des_statue_login").previousSibling.innerHTML="&#x55;";
 		}
 		_f("#syslab_api_plbg_des_statue_login").addEventListener("click",function(){
-			if($this.apidata.login){
-				$this.apidata.login=0;
+			if(LAST_CLICKED_API.apidata.login){
+				LAST_CLICKED_API.apidata.login=0;
 				_f("#syslab_api_plbg_des_statue_login").previousSibling.innerHTML="&#x55;";
 			}else{
-				$this.apidata.login=1;
+				LAST_CLICKED_API.apidata.login=1;
 				_f("#syslab_api_plbg_des_statue_login").previousSibling.innerHTML="&#x56;";
 			}
 			needsave();
 		},false);
 		
-		if($this.apidata.admin){
+		if(LAST_CLICKED_API.apidata.admin){
 			_f("#syslab_api_plbg_des_statue_admin").previousSibling.innerHTML="&#x56;";
 		}else{
 			_f("#syslab_api_plbg_des_statue_admin").previousSibling.innerHTML="&#x55;";
 		}
 		_f("#syslab_api_plbg_des_statue_admin").addEventListener("click",function(){
-			if($this.apidata.admin){
-				$this.apidata.admin=0;
+			if(LAST_CLICKED_API.apidata.admin){
+				LAST_CLICKED_API.apidata.admin=0;
 				_f("#syslab_api_plbg_des_statue_admin").previousSibling.innerHTML="&#x55;";
 			}else{
-				$this.apidata.admin=1;
+				LAST_CLICKED_API.apidata.admin=1;
 				_f("#syslab_api_plbg_des_statue_admin").previousSibling.innerHTML="&#x56;";
 			}
 			needsave();
 		},false);
 		
-		if($this.apidata.post){
+		if(LAST_CLICKED_API.apidata.post){
 			_f("#syslab_api_plbg_des_statue_post").previousSibling.innerHTML="&#x56;";
 		}else{
 			_f("#syslab_api_plbg_des_statue_post").previousSibling.innerHTML="&#x55;";
 		}
 		_f("#syslab_api_plbg_des_statue_post").addEventListener("click",function(){
-			if($this.apidata.admin){
-				$this.apidata.admin=0;
+			if(LAST_CLICKED_API.apidata.admin){
+				LAST_CLICKED_API.apidata.admin=0;
 				_f("#syslab_api_plbg_des_statue_post").previousSibling.innerHTML="&#x55;";
 			}else{
-				$this.apidata.admin=1;
+				LAST_CLICKED_API.apidata.admin=1;
 				_f("#syslab_api_plbg_des_statue_post").previousSibling.innerHTML="&#x56;";
 			}
 			needsave();
 		},false);
 		
-		if($this.apidata.get){
+		if(LAST_CLICKED_API.apidata.get){
 			_f("#syslab_api_plbg_des_statue_get").previousSibling.innerHTML="&#x56;";
 		}else{
 			_f("#syslab_api_plbg_des_statue_get").previousSibling.innerHTML="&#x55;";
 		}
 		_f("#syslab_api_plbg_des_statue_get").addEventListener("click",function(){
-			if($this.apidata.admin){
-				$this.apidata.admin=0;
+			if(LAST_CLICKED_API.apidata.admin){
+				LAST_CLICKED_API.apidata.admin=0;
 				_f("#syslab_api_plbg_des_statue_get").previousSibling.innerHTML="&#x55;";
 			}else{
-				$this.apidata.admin=1;
+				LAST_CLICKED_API.apidata.admin=1;
 				_f("#syslab_api_plbg_des_statue_get").previousSibling.innerHTML="&#x56;";
 			}
 			needsave();
 		},false);
 		
-		if($this.apidata.jsonp){
+		if(LAST_CLICKED_API.apidata.jsonp){
 			_f("#syslab_api_plbg_des_statue_jsonp").previousSibling.innerHTML="&#x56;";
 		}else{
 			_f("#syslab_api_plbg_des_statue_jsonp").previousSibling.innerHTML="&#x55;";
 		}
 		_f("#syslab_api_plbg_des_statue_jsonp").addEventListener("click",function(){
-			if($this.apidata.jsonp){
-				$this.apidata.jsonp=0;
+			if(LAST_CLICKED_API.apidata.jsonp){
+				LAST_CLICKED_API.apidata.jsonp=0;
 				_f("#syslab_api_plbg_des_statue_jsonp").previousSibling.innerHTML="&#x55;";
 			}else{
-				$this.apidata.jsonp=1;
+				LAST_CLICKED_API.apidata.jsonp=1;
 				_f("#syslab_api_plbg_des_statue_jsonp").previousSibling.innerHTML="&#x56;";
 			}
 			needsave();
@@ -2078,17 +2078,17 @@ function parse_APIDOC_do(data,node,lastw){
 		
 		
 		
-		_f("#syslab_api_plbg_des_statue_req").previousSibling.innerHTML=$this.apidata.request;
+		_f("#syslab_api_plbg_des_statue_req").previousSibling.innerHTML=LAST_CLICKED_API.apidata.request;
 		_f("#syslab_api_plbg_des_statue_req").addEventListener("click",function(){
 			if(this.savedata){
-				$this.apidata.request=this.savedata.value;
-				this.previousSibling.innerHTML=$this.apidata.request;
+				LAST_CLICKED_API.apidata.request=this.savedata.value;
+				this.previousSibling.innerHTML=LAST_CLICKED_API.apidata.request;
 				this.savedata=0;
 				needsave();
 			}else{
 				this.previousSibling.innerHTML="";
 				var tmpipt=document.createElement('input');
-				tmpipt.value=$this.apidata.request;
+				tmpipt.value=LAST_CLICKED_API.apidata.request;
 				this.previousSibling.appendChild(tmpipt);
 				this.savedata=tmpipt;
 			}
@@ -2098,9 +2098,9 @@ function parse_APIDOC_do(data,node,lastw){
 		
 		_f("#syslab_api_plbg_des_inputvar").innerHTML='<li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar">必选</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
 		var j=-1;
-		for(var i=0;i<$this.apidata.req.length;i++){
+		for(var i=0;i<LAST_CLICKED_API.apidata.req.length;i++){
 			
-			var tdata=$this.apidata.req[i];
+			var tdata=LAST_CLICKED_API.apidata.req[i];
 			if(!tdata){
 				continue;
 			}
@@ -2249,11 +2249,11 @@ function parse_APIDOC_do(data,node,lastw){
 				m:0,
 				t:"string",
 				des:"描述",
-				parent:$this.apidata
+				parent:LAST_CLICKED_API.apidata
 			}
-			$this.apidata.req.push(tdata);
+			LAST_CLICKED_API.apidata.req.push(tdata);
 			var tmpb=document.createElement('li');
-			tmpb.className=(($this.apidata.req.length-1)%2==0)?"bgWhite":"bgBlack";
+			tmpb.className=((LAST_CLICKED_API.apidata.req.length-1)%2==0)?"bgWhite":"bgBlack";
 			tmpb.apidata=tdata;
 			_f("#syslab_api_plbg_des_inputvar").appendChild(tmpb);
 			var tmpc=document.createElement('span');
@@ -2382,9 +2382,9 @@ function parse_APIDOC_do(data,node,lastw){
 			
 		},false);
 		
-		_f("#syslab_api_plbg_des_code").innerHTML='<pre class="brush: js">'+$this.apidata.code+'</pre>';
+		_f("#syslab_api_plbg_des_code").innerHTML='<pre class="brush: js">'+LAST_CLICKED_API.apidata.code+'</pre>';
 		SyntaxHighlighter.highlight();
-		_f("#syslab_api_plbg_des_code_title_btn").apidata=$this.apidata;
+		_f("#syslab_api_plbg_des_code_title_btn").apidata=LAST_CLICKED_API.apidata;
 		_f("#syslab_api_plbg_des_code_title_btn").addEventListener("click",function(){
 			
 			if(this.savedata2){
@@ -2406,8 +2406,8 @@ function parse_APIDOC_do(data,node,lastw){
        			
 		_f("#syslab_api_plbg_codedes").innerHTML='<li class="bgBlack"><span class="syslab_api_plbg_des_inputvar">字段</span><span class="syslab_api_plbg_des_inputvar">类型</span><span class="syslab_api_plbg_des_inputvar">说明</span></li>';
 		var j=-1;
-		for(var i=0;i<$this.apidata.codedes.length;i++){
-			var tdata=$this.apidata.codedes[i];
+		for(var i=0;i<LAST_CLICKED_API.apidata.codedes.length;i++){
+			var tdata=LAST_CLICKED_API.apidata.codedes[i];
 			if(!tdata){
 				continue;
 			}
@@ -2530,11 +2530,11 @@ function parse_APIDOC_do(data,node,lastw){
 				m:0,
 				t:"string",
 				des:"描述",
-				parent:$this.apidata
+				parent:LAST_CLICKED_API.apidata
 			}
-			$this.apidata.codedes.push(tdata);
+			LAST_CLICKED_API.apidata.codedes.push(tdata);
 			var tmpb=document.createElement('li');
-			tmpb.className=(($this.apidata.codedes.length-1)%2==0)?"bgWhite":"bgBlack";
+			tmpb.className=((LAST_CLICKED_API.apidata.codedes.length-1)%2==0)?"bgWhite":"bgBlack";
 			tmpb.apidata=tdata;
 			_f("#syslab_api_plbg_codedes").appendChild(tmpb);
 			var tmpc=document.createElement('span');
@@ -2640,8 +2640,8 @@ function parse_APIDOC_do(data,node,lastw){
 			
 		},false);
 		
-		_f("#syslab_api_plbg_des_des_var").innerHTML=$this.apidata.note;
-		_f("#syslab_api_plbg_des_des_var_btn").apidata=$this.apidata;
+		_f("#syslab_api_plbg_des_des_var").innerHTML=LAST_CLICKED_API.apidata.note;
+		_f("#syslab_api_plbg_des_des_var_btn").apidata=LAST_CLICKED_API.apidata;
 		_f("#syslab_api_plbg_des_des_var_btn").addEventListener("click",function(){
 			if(this.savedata1){
 				this.apidata.note=this.savedata1.value;

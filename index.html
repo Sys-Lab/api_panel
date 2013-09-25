@@ -1950,6 +1950,7 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_name").appendChild(tmpa);
 		tmpa.addEventListener("click",function(){
 			if(this.savedata){
+				if(!this.savedata.value){return;}
 				LAST_CLICKED_API.apidata.name=this.savedata.value;
 				
 				if(LAST_CLICKED_API.lastw&&LAST_CLICKED_API.lastw!=""){
@@ -1966,6 +1967,21 @@ function parse_APIDOC_do(data,node,lastw){
 				tmpipt.value=LAST_CLICKED_API.apidata.name;
 				this.previousSibling.appendChild(tmpipt);
 				this.savedata=tmpipt;
+				
+				tmpipt.addEventListener("blur",function(){
+					if(!this.value){return;}
+					LAST_CLICKED_API.apidata.name=this.value;
+					this.parentNode.nextSibling.savedata=0;
+					if(LAST_CLICKED_API.lastw&&LAST_CLICKED_API.lastw!=""){
+						this.parentNode.innerHTML=LAST_CLICKED_API.lastw+"."+LAST_CLICKED_API.apidata.name;
+					}else{
+						this.parentNode.innerHTML=LAST_CLICKED_API.apidata.name;
+					}
+					freash_api_names();
+					
+					needsave();
+				},false)
+				
 			}
 		},false);
 		
@@ -1978,6 +1994,7 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_detialdes").appendChild(tmpa);
 		tmpa.addEventListener("click",function(){
 			if(this.savedata){
+				if(!this.savedata.value){return;}
 				LAST_CLICKED_API.apidata.des=this.savedata.value;
 				this.previousSibling.innerHTML=LAST_CLICKED_API.apidata.des;
 				this.savedata=0;
@@ -2081,6 +2098,7 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_statue_req").previousSibling.innerHTML=LAST_CLICKED_API.apidata.request;
 		_f("#syslab_api_plbg_des_statue_req").addEventListener("click",function(){
 			if(this.savedata){
+				if(!this.savedata.value){return;}
 				LAST_CLICKED_API.apidata.request=this.savedata.value;
 				this.previousSibling.innerHTML=LAST_CLICKED_API.apidata.request;
 				this.savedata=0;
@@ -2091,6 +2109,13 @@ function parse_APIDOC_do(data,node,lastw){
 				tmpipt.value=LAST_CLICKED_API.apidata.request;
 				this.previousSibling.appendChild(tmpipt);
 				this.savedata=tmpipt;
+				tmpipt.addEventListener("blur",function(){
+					if(!this.value){return;}
+					LAST_CLICKED_API.apidata.request=this.value;
+					this.parentNode.nextSibling.savedata=0;
+					this.parentNode.innerHTML=LAST_CLICKED_API.apidata.request;
+					needsave();
+				},false)
 			}
 		},false);
 		
@@ -2119,6 +2144,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.n=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.n;
 					this.savedata=0;
@@ -2129,6 +2155,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.n;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.n=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.n;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2165,6 +2198,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.t=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.t;
 					this.savedata=0;
@@ -2175,6 +2209,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.t;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.t=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.t;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2188,6 +2229,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.des=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.des;
 					this.savedata=0;
@@ -2198,6 +2240,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.des;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.des=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.des;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2266,6 +2315,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.n=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.n;
 					this.savedata=0;
@@ -2276,6 +2326,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.n;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.n=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.n;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2312,6 +2369,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.t=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.t;
 					this.savedata=0;
@@ -2322,6 +2380,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.t;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.t=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.t;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2335,6 +2400,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.des=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.des;
 					this.savedata=0;
@@ -2345,6 +2411,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.des;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.des=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.des;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2388,6 +2461,7 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_code_title_btn").addEventListener("click",function(){
 			
 			if(this.savedata2){
+				if(!this.savedata2.value){return;}
 				this.apidata.code=this.savedata2.value;
 				_f("#syslab_api_plbg_des_code").innerHTML='<pre class="brush: js">'+this.apidata.code+'</pre>';
 				SyntaxHighlighter.highlight();
@@ -2426,6 +2500,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.n=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.n;
 					this.savedata=0;
@@ -2436,6 +2511,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.n;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.n=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.n;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2449,6 +2531,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.t=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.t;
 					this.savedata=0;
@@ -2459,6 +2542,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.t;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.t=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.t;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2472,6 +2562,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.des=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.des;
 					this.savedata=0;
@@ -2482,6 +2573,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.des;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.des=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.des;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2547,6 +2645,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpc);
 			tmpc.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.n=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.n;
 					this.savedata=0;
@@ -2557,6 +2656,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.n;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.n=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.n;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2570,6 +2676,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.t=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.t;
 					this.savedata=0;
@@ -2580,6 +2687,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.t;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.t=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.t;
+						needsave();
+					},false)
 				}
 			},false);
 			
@@ -2593,6 +2707,7 @@ function parse_APIDOC_do(data,node,lastw){
 			tmpb.appendChild(tmpd);
 			tmpd.addEventListener("click",function(){
 				if(this.savedata){
+					if(!this.savedata.value){return;}
 					this.parentNode.apidata.des=this.savedata.value;
 					this.previousSibling.innerHTML=this.parentNode.apidata.des;
 					this.savedata=0;
@@ -2603,6 +2718,13 @@ function parse_APIDOC_do(data,node,lastw){
 					tmpipt.value=this.parentNode.apidata.des;
 					this.previousSibling.appendChild(tmpipt);
 					this.savedata=tmpipt;
+					tmpipt.addEventListener("blur",function(){
+						if(!this.value){return;}
+						this.parentNode.parentNode.apidata.des=this.value;
+						this.parentNode.nextSibling.savedata=0;
+						this.parentNode.innerHTML=this.parentNode.parentNode.apidata.des;
+						needsave();
+					},false)
 				}
 			},false);
 			

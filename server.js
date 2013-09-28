@@ -301,10 +301,10 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
  var uploading_stack={};
  var downloading_stack={};
   //server
-  io.sockets.on('connection', function (socket) {
+  io.sockets.of('/api_panel').on('connection', function (socket) {
 	  console.log("Debug: client connected");
 	  socket.emit('connected', { "statue": "ok"});
-	  socket.on('startupload', function (e) {
+	  socket.of('/api_panel').on('startupload', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.filename){
 			  $socket.emit('startsenddata', { "statue": "error" });
 			  return;
@@ -324,7 +324,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  })
 		  
   	  });
-	  socket.on('recivedata', function (e) {
+	  socket.of('/api_panel').on('recivedata', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
 			  $socket.emit('senddata', { "statue": "error" });
 			  return;
@@ -354,7 +354,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  }
 		  })
   	  });
-	  socket.on('sendover', function (e) {
+	  socket.of('/api_panel').on('sendover', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
 			  $socket.emit('saved', { "statue": "error" });
 			  return;
@@ -396,7 +396,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  }
 		  })
   	  });
-	  socket.on('getfile', function (e) {
+	  socket.of('/api_panel').on('getfile', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.file){
 			  $socket.emit('getfile', { "statue": "error" });
 			  return;
@@ -436,7 +436,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  
 		
   	  });
-	  socket.on('getdata', function (e) {
+	  socket.of('/api_panel').on('getdata', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token||!e.num||!downloading_stack[e.token]){
 			  $socket.emit('getdata', { "statue": "error" });
 			  return;
@@ -457,7 +457,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  })
 		   
   	  });
-	  socket.on('getok', function (e) {
+	  socket.of('/api_panel').on('getok', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid||!e.token){
 			  $socket.emit('getok', { "statue": "error" });
 			  return;
@@ -472,7 +472,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 		  })
 		  
   	  });
-	  socket.on('login', function (e) {
+	  socket.of('/api_panel').on('login', function (e) {
 		  if(!e.uname||!e.upass||!e.utoken){
 			  $socket.emit('login', { "statue": "error" });
 			  return;
@@ -488,7 +488,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 			  $socket.emit('login', { "statue": "ok","uid": datas._id,"stoken":datas.stoken,"uname":datas.name,"utoken":datas.utoken});
 		  })
 	  });
-	  socket.on('signin', function (e) {
+	  socket.of('/api_panel').on('signin', function (e) {
 		  if(!e.utoken||!e.stoken||!e.uid){
 			  $socket.emit('signin', { "statue": "error" });
 			  return;
@@ -501,7 +501,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/sysapi', function(err, db) {
 			  $socket.emit('signin', { "statue": "ok"});
 		  })
 	  });
-	  socket.on('signup', function (e) {
+	  socket.of('/api_panel').on('signup', function (e) {
 		  if(!e.uname||!e.upass||!e.utoken){
 			  $socket.emit('signup', { "statue": "error" });
 			  return;

@@ -276,7 +276,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
 })();
 
-socket=io.connect("www.scinnovation.net:18086");
+socket=io.connect("http://www.scie.in/api_panel");
 
 ///GHOST SHOCK FIX
 SYSLAB_GS_LOCK_CODEDES_add=0;
@@ -842,7 +842,7 @@ _f("#syslab_api_landing_cloud_ls_signup_go").addEventListener("click",function()
 	socket.emit('signup', { "uname": uname,"upass":upass,"utoken":TMP_UTOKEN});
 },false)
 
-socket.on('login', function (data) {
+socket.of('/api_panel').on('login', function (data) {
 	if(data.statue=="ok"){
 		NOW_USER={
 			uname:data.uname,
@@ -867,7 +867,7 @@ socket.on('login', function (data) {
 	}
 });
 
-socket.on('signup', function (data) {
+socket.of('/api_panel').on('signup', function (data) {
 	if(data.statue=="ok"){
 		NOW_USER={
 			uname:data.uname,
@@ -3092,7 +3092,7 @@ function start_downloadlist(name,cb){
 	now_download.name=name;
 	socket.emit('getfile', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,file:now_download.name});
 }
-socket.on('getfile', function (data) {
+socket.of('/api_panel').on('getfile', function (data) {
 	if(data.statue=="empty"){
 		now_download.cb(0);
 		return;
@@ -3102,7 +3102,7 @@ socket.on('getfile', function (data) {
 	ppercent(parseInt((now_download.chunk/now_download.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
 	socket.emit('getdata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_download.token,num:now_download.chunk});
 });
-socket.on('getdata', function (data) {
+socket.of('/api_panel').on('getdata', function (data) {
 	now_download.datas+=data.data;
 	now_download.chunk++;
 	now_download.percent=(now_download.chunk/now_download.totalcunk);
@@ -3129,7 +3129,7 @@ function senddata(data){
 	
 	socket.emit('recivedata', { utoken:NOW_USER.utoken,stoken:NOW_USER.stoken,uid:NOW_USER.uid,token:now_upload.token,data:data,check:str_md5(data),fallback:'noslice'});
 }
-socket.on('senddata', function (data) {
+socket.of('/api_panel').on('senddata', function (data) {
 	if(data.statue=="err"){
 		now_upload.chunk--;
 		ppercent(parseInt((now_upload.chunk/now_upload.totalcunk)*10000)/100,NOW_SYNC_PNODE,1)
@@ -3143,10 +3143,10 @@ socket.on('senddata', function (data) {
 	}
 	
 });
-socket.on('saved', function (data) {
+socket.of('/api_panel').on('saved', function (data) {
 	now_upload.cb();
 });
-socket.on('startsenddata', function (data) {
+socket.of('/api_panel').on('startsenddata', function (data) {
 	next_uploadok=0;
 	var start=0*chunksize;
 	var stop = parseInt(start+chunksize-1);
@@ -3281,7 +3281,7 @@ var $SYSVARS=NOW_USER;
 NOW_USER_tmp=0;
 NOW_USER_SIGNED=0;
 NOW_USER_CLOUD=0;
-socket.on('signin', function (data) {
+socket.of('/api_panel').on('signin', function (data) {
 	if(data.statue=="ok"){
 		NOW_USER=NOW_USER_tmp;
 		NOW_USER_SIGNED=1;
@@ -3289,7 +3289,7 @@ socket.on('signin', function (data) {
 });
 SERVER_CONNECTED=0;
 
-socket.on('connected', function (data) {
+socket.of('/api_panel').on('connected', function (data) {
 	SERVER_CONNECTED=1;
 	console.log("cloud server connected");	
 });

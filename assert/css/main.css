@@ -892,3 +892,19 @@ color: rgba(255,255,255,0.5);
 }
 #syslab_api_plbg_apis_search div{
 }
+.codeediting{
+box-shadow:0px 0px 10px 1px #eee;
+}
+#syslab_api_plbg_des_code_type{
+outline: none;
+cursor: pointer;
+-webkit-appearance: none;
+appearance: none;
+border-radius: 5px;
+border: none;
+font-size: 24px;
+background-color: rgba(255,255,255,0.5);
+color: #444;
+float: right;
+margin-right: 200px;
+}

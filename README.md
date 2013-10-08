@@ -2,8 +2,10 @@ api_panel
 =========
 
 <h3>demos <a href="http://api.syslab.us/">http://api.syslab.us/</a></h3>
+
 static files are hosted on github;
-socket.io server is being tested now
+
+socket.io server is being tested now[test cloud server wanted    exec and file storage are needed]
 
 From idea to project 20h
 
@@ -12,7 +14,7 @@ HTML5 Powered , API Documentation Panel
 
 =============================
 Please Use Chrome Or other Webkit browsers.
-FF IE hasn't been tested;
+FF IE hasn't been tested
 =============================
 
 Features:
@@ -24,6 +26,8 @@ Features:
 - Cloud Sync.(NodeJs)
 - Export To JSON/HTML(For Print)/PDF.
 - WYSIWYG Document Edit.
+- Live WYSIWYG code edit.
+- Mutil programimg language sample code support.
 
 
 
@@ -41,6 +45,32 @@ Todos:
 
 Change Log:
 =============================
+v2013100501
+
+    - Add Live WYSIWYG code edit. You can now edit code live with highlight;
+    
+    - Add Mutil programimg language sample code support.
+    
+    : Support
+    
+        -Javascript
+        -CoffeeScript
+        -CSS
+        -HTML
+        -Markdown
+        -PHP
+        -Python
+        -Ruby
+        -HTTP
+        -Nginx
+        -Shell
+        -SQL
+        -XML
+        
+    !! I use CodeMirror to provide those cool features;
+    
+    !! Thabks a lot to CodeMirror's developer;
+    
 v2013092001
 
     - Add Search . You can now use left corner search bar;

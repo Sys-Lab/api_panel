@@ -2462,12 +2462,12 @@ function parse_APIDOC_do(data,node,lastw){
 		_f("#syslab_api_plbg_des_code_title_btn").addEventListener("click",function(){
 		
 			if(this.savedata2){
-				if(!this.savedata.doc||!this.savedata.doc.getValue){return;}
-				var codes=this.savedata.doc.getValue();
+				if(!this.savedata2.doc||!this.savedata2.doc.getValue){return;}
+				var codes=this.savedata2.doc.getValue();
 				this.apidata.code=codes;
 				//_f("#syslab_api_plbg_des_code").innerHTML='<pre class="brush: js">'+this.apidata.code+'</pre>';
 				//highlightthis(this.apidata.code);
-				this.savedata.options.readOnly=true;
+				this.savedata2.options.readOnly=true;
 				this.savedata2=0;
 				_c(document.getElementById('syslab_api_plbg_des_code')).remove("codeediting");
 				needsave();
@@ -3045,7 +3045,7 @@ function save_manual(){
 		NOW_SYNC_PNODE=_f("#notice_pbar");
 		NOW_SYNC_PTYPE=1;
 		sync_datas(function(){
-			sys_api_notice("同步完成",1,0,1);
+			sys_api_notice("同步完成",1,3000);
 			setTimeout(function(){
 				syncnotice.removethis();
 			},3000)
